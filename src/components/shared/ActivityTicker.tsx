@@ -28,10 +28,10 @@ export function ActivityTicker() {
   const newJobsCount = jobs.filter(j => j.status === "Open").length;
 
   // 3. Upcoming events in city
-  const cityEvents = events.filter(e => e.location.toLowerCase().includes(baseLocation.toLowerCase())).length;
+  const cityEvents = events.filter(e => e.location?.toLowerCase().includes(baseLocation.toLowerCase())).length;
 
   // 4. New members from location
-  const localMembers = entrepreneurs.filter(e => e.id !== currentUser.id && e.location.includes(baseLocation) && e.status === "Active").length;
+  const localMembers = entrepreneurs.filter(e => e.id !== currentUser.id && e.location?.includes(baseLocation) && e.status === "Active").length;
 
   // 5. Total opportunities (jobs + events in city)
   const newOpportunities = newJobsCount + cityEvents;

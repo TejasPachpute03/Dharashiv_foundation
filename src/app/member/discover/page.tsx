@@ -38,7 +38,7 @@ function DirectoryContent() {
 
   // Extract unique locations and lookingFor options for filters
   const locations = useMemo(() => {
-    const locs = new Set(entrepreneurs.map(e => e.location.split(",")[0].trim()));
+    const locs = new Set(entrepreneurs.map(e => e.location?.split(",")[0].trim()));
     return Array.from(locs).sort();
   }, [entrepreneurs]);
 
@@ -80,7 +80,7 @@ function DirectoryContent() {
     }
 
     if (selectedLocation) {
-      result = result.filter(e => e.location.includes(selectedLocation) || (e.address?.currentCity && e.address.currentCity.includes(selectedLocation)));
+      result = result.filter(e => e.location?.includes(selectedLocation) || (e.address?.currentCity && e.address.currentCity.includes(selectedLocation)));
     }
 
     if (selectedTaluka) {

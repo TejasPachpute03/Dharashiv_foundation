@@ -73,7 +73,7 @@ function DirectoryContent() {
     }
 
     if (selectedLocation) {
-      result = result.filter(e => e.location.includes(selectedLocation) || (e.address?.currentCity && e.address.currentCity.includes(selectedLocation)));
+      result = result.filter(e => e.location?.includes(selectedLocation) || (e.address?.currentCity && e.address.currentCity.includes(selectedLocation)));
     }
 
     if (selectedTaluka) {

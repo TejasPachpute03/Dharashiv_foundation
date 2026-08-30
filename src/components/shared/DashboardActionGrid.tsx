@@ -30,7 +30,7 @@ export function DashboardActionGrid({ role }: DashboardActionGridProps) {
     .flatMap(c => [c.requesterId, c.recipientId]);
     
   const localPeople = entrepreneurs.filter(
-    e => e.id !== currentUser.id && !connectedIds.includes(e.id) && e.status === "Active" && e.location.includes(baseLocation)
+    e => e.id !== currentUser.id && !connectedIds.includes(e.id) && e.status === "Active" && e.location?.includes(baseLocation)
   );
   const peopleYouMayKnowCount = localPeople.length;
 

@@ -41,7 +41,7 @@ export default function AdminEventsPage() {
 
   const filteredEvents = events.filter(e => 
     e.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    e.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    e.location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     e.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
