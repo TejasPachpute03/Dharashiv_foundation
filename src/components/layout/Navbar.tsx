@@ -9,9 +9,10 @@ import { Button } from "@/components/ui/Button";
 export function Navbar() {
   const pathname = usePathname();
   const links = [
-    { href: "/", label: "Home" },
     { href: "/#about", label: "About" },
-    { href: "/#entrepreneur-network", label: "Network" },
+    { href: "/#community", label: "Community" },
+    { href: "/#entrepreneurs", label: "Entrepreneurs" },
+    { href: "/#events", label: "Events" },
     { href: "/#how-it-works", label: "How It Works" },
   ];
 
@@ -31,7 +32,7 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "transition-colors hover:text-foreground/80 hidden md:block",
+                  "transition-colors hover:text-foreground/80 hidden lg:block",
                   pathname === link.href ? "text-foreground" : "text-foreground/60"
                 )}
               >
@@ -43,7 +44,9 @@ export function Navbar() {
             <Button variant="ghost" asChild className="hidden sm:inline-flex">
               <Link href="/login">Login</Link>
             </Button>
-
+            <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground hidden sm:inline-flex">
+              <Link href="/login">Join Foundation</Link>
+            </Button>
           </div>
         </div>
       </div>
