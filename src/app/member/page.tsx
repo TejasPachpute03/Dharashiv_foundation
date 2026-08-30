@@ -16,7 +16,6 @@ export default function DashboardOverview() {
         <p className="text-muted-foreground mt-2">Grow your network. Discover opportunities. Build stronger businesses.</p>
       </div>
 
-      <ProfileCompletionNudge role="member" />
       <ActivityTicker />
       <DashboardActionGrid role="member" />
     </div>

@@ -16,7 +16,6 @@ export default function StudentDashboardOverview() {
         <p className="text-muted-foreground mt-2">Explore opportunities, submit ideas, and discover your path.</p>
       </div>
 
-      <ProfileCompletionNudge role="student" />
       <ActivityTicker />
       <DashboardActionGrid role="student" />
     </div>
