@@ -90,3 +90,30 @@
     background-attachment: fixed;
   }
 }
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    animation: marquee 15s linear infinite;
+  }
+
+  @keyframes flashRedBlack {
+    0% { color: #000000; }
+    50% { color: #EF4444; }
+    100% { color: #000000; }
+  }
+  .animate-flash-red-black {
+    animation: flashRedBlack 2s ease-in-out infinite;
+  }
+}

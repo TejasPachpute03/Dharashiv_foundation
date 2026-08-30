@@ -6,12 +6,16 @@ import { useAppContext } from "@/context/AppContext";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { ProfileCompletionAvatar } from "@/components/ui/ProfileCompletionAvatar";
+import { calculateProfileCompletion } from "@/lib/utils";
 
 export default function AdminProfilePage() {
   const { currentUser, entrepreneurs } = useAppContext();
   const profile = entrepreneurs.find(e => e.id === currentUser?.id);
 
   if (!profile) return <div>Profile not found</div>;
+
+  const completion = calculateProfileCompletion(profile);
 
   return (
     <div className="max-w-6xl mx-auto animate-in fade-in duration-500 pb-12">
@@ -21,12 +25,8 @@ export default function AdminProfilePage() {
         <div className="h-40 bg-secondary w-full relative">
           {/* Avatar overlap */}
           <div className="absolute -bottom-16 left-8">
-            <div className="h-32 w-32 rounded-full border-4 border-background bg-muted flex items-center justify-center overflow-hidden shadow-sm">
-              {profile.profileImage ? (
-                <img src={profile.profileImage} alt={profile.name} className="h-full w-full object-cover" />
-              ) : (
-                <span className="text-4xl font-bold text-muted-foreground">{profile.name.charAt(0)}</span>
-              )}
+            <div className="bg-background rounded-full inline-flex p-1 shadow-sm">
+              <ProfileCompletionAvatar profile={profile} size={140} strokeWidth={6} ringColorClass="text-primary" />
             </div>
           </div>
         </div>
@@ -108,17 +108,19 @@ export default function AdminProfilePage() {
         <CardContent className="p-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex-1 space-y-2 w-full">
-              <h3 className="text-xl font-bold">Profile 85% Complete</h3>
+              <h3 className="text-xl font-bold">Profile {completion}% Complete</h3>
               <div className="h-2 w-full bg-primary-foreground/20 rounded-full overflow-hidden">
-                <div className="h-full bg-accent-light w-[85%] rounded-full" />
+                <div className="h-full bg-accent-light rounded-full" style={{ width: `${completion}%` }} />
               </div>
               <p className="text-sm text-primary-foreground/80">
                 Add your exact business needs to reach 100% and improve your matching score.
               </p>
             </div>
-            <Button className="shrink-0 bg-accent-light text-primary hover:bg-accent-light/90" asChild>
-              <Link href="/admin/profile/edit">Complete Profile</Link>
-            </Button>
+            {completion < 100 && (
+              <Button className="shrink-0 bg-accent-light text-accent-foreground hover:bg-accent-light/90" asChild>
+                <Link href="/admin/profile/edit">Complete Profile</Link>
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -131,7 +133,7 @@ export default function AdminProfilePage() {
             <p className="text-muted-foreground leading-relaxed text-sm">
               {profile.description || "No description provided."}
             </p>
-            <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 pt-6 border-t">
               <div>
                 <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">Industry</p>
                 <p className="font-medium text-sm">{profile.industry}</p>
@@ -140,6 +142,12 @@ export default function AdminProfilePage() {
                 <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">Years in Business</p>
                 <p className="font-medium text-sm">{profile.yearsInBusiness}</p>
               </div>
+              {profile.turnoverRange && (
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase mb-1">Turnover</p>
+                  <p className="font-medium text-sm">{profile.turnoverRange === "5CRPLUS" ? "5CR+" : profile.turnoverRange}</p>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

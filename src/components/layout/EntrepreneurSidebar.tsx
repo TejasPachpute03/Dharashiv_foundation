@@ -4,10 +4,11 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { 
   Network, LayoutDashboard, UserCircle, Search, 
-  Users, Bookmark, Bell, Megaphone, Calendar, Settings, LogOut 
+  Users, Bookmark, Bell, Megaphone, Calendar, Settings, LogOut, Briefcase
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppContext } from "@/context/AppContext";
+import { ProfileCompletionAvatar } from "@/components/ui/ProfileCompletionAvatar";
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -28,8 +29,8 @@ export function EntrepreneurSidebar({ isOpen, setIsOpen }: SidebarProps) {
 
   const networkNav = [
     { href: "/dashboard/network", label: "My Network", icon: <Users className="w-5 h-5" /> },
-    { href: "/dashboard/saved", label: "Favourite Profiles", icon: <Bookmark className="w-5 h-5" /> },
     { href: "/dashboard/events", label: "Events", icon: <Calendar className="w-5 h-5" /> },
+    { href: "/dashboard/jobs", label: "Jobs/Vacancies", icon: <Briefcase className="w-5 h-5" /> },
   ];
 
   const accountNav = [
@@ -109,19 +110,13 @@ export function EntrepreneurSidebar({ isOpen, setIsOpen }: SidebarProps) {
 
       <div className="p-4 border-t border-black/10">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3 min-w-0">
-            <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground font-bold shrink-0 overflow-hidden">
-              {currentProfile?.profileImage ? (
-                <img src={currentProfile.profileImage} alt="Profile" className="h-full w-full object-cover" />
-              ) : (
-                <span>{currentProfile?.name?.charAt(0) || "U"}</span>
-              )}
-            </div>
+          <Link href="/dashboard/profile" className="flex items-center space-x-3 cursor-pointer group flex-1 min-w-0">
+            <ProfileCompletionAvatar profile={currentProfile} size={36} strokeWidth={2.5} />
             <div className="flex flex-col min-w-0 pr-2">
-              <span className="text-sm font-semibold truncate text-black">{currentProfile?.name || "Entrepreneur"}</span>
-              <span className="text-xs text-black/60 truncate">Member</span>
+              <span className="text-sm font-semibold truncate group-hover:text-primary text-black transition-colors" title={currentProfile?.name || "Business"}>{currentProfile?.name || "Business"}</span>
+              <span className="text-xs text-black/60 truncate group-hover:text-black/80 transition-colors">Member</span>
             </div>
-          </div>
+          </Link>
           <button 
             onClick={handleLogout}
             className="p-2 text-black/60 hover:text-black hover:bg-black/5 rounded transition-colors shrink-0"

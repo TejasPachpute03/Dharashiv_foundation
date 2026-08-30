@@ -1,8 +1,8 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { User, Entrepreneur, Category, Announcement, Event, Notification, Activity, Connection, ChatMessage } from "@/types";
-import { mockEntrepreneurs, mockCategories, mockAnnouncements, mockEvents, mockActivities, mockConnections } from "@/data/mockData";
+import { User, Entrepreneur, Category, Announcement, Event, Notification, Activity, Connection, ChatMessage, Job } from "@/types";
+import { mockEntrepreneurs, mockCategories, mockAnnouncements, mockEvents, mockActivities, mockConnections, mockJobs } from "@/data/mockData";
 
 export interface SystemSettings {
   autoApprove: boolean;
@@ -15,17 +15,17 @@ export interface SystemSettings {
 
 interface AppContextType {
   currentUser: User | null;
-  login: (email: string, role: "Entrepreneur / Member" | "Core Member / Admin") => void;
+  login: (email: string, role: "Business / Member" | "Core Member / Admin" | "Student" | "General Member") => void;
   logout: () => void;
   
   entrepreneurs: Entrepreneur[];
   categories: Category[];
   announcements: Announcement[];
   events: Event[];
+  jobs: Job[];
   activities: Activity[];
   connections: Connection[];
   notifications: Notification[];
-  savedEntrepreneurs: string[];
   settings: SystemSettings;
   
   activeChatUserId: string | null;
@@ -45,7 +45,6 @@ interface AppContextType {
   acceptConnectionRequest: (connectionId: string) => void;
   rejectConnectionRequest: (connectionId: string) => void;
   cancelConnectionRequest: (connectionId: string) => void;
-  toggleSaved: (entrepreneurId: string) => void;
   addAnnouncement: (announcement: Omit<Announcement, "id" | "createdAt">) => void;
   updateAnnouncement: (id: string, announcement: Partial<Announcement>) => void;
   deleteAnnouncement: (id: string) => void;
@@ -67,10 +66,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
+  const [jobs, setJobs] = useState<Job[]>([]);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [connections, setConnections] = useState<Connection[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [savedEntrepreneurs, setSavedEntrepreneurs] = useState<string[]>([]);
   const [activeChatUserId, setActiveChatUserId] = useState<string | null>(null);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [settings, setSettings] = useState<SystemSettings>({
@@ -84,6 +83,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const [isClient, setIsClient] = useState(false);
 
+  // Increment this version when you want to force clients to reload mock data
+  const MOCK_DATA_VERSION = 5;
+
   // Initialize from LocalStorage or use mock data
   useEffect(() => {
     setIsClient(true);
@@ -91,11 +93,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const storedUser = localStorage.getItem("df_user");
     if (storedUser) setCurrentUser(JSON.parse(storedUser));
 
+    const storedVersion = localStorage.getItem("df_mock_version");
+    if (storedVersion !== "4") {
+      localStorage.removeItem("df_entrepreneurs");
+      localStorage.setItem("df_mock_version", "4");
+    }
+
     const storedEntrepreneurs = localStorage.getItem("df_entrepreneurs");
     if (storedEntrepreneurs) {
       const parsed = JSON.parse(storedEntrepreneurs);
-      if (parsed.length < mockEntrepreneurs.length) setEntrepreneurs(mockEntrepreneurs);
-      else setEntrepreneurs(parsed);
+      if (parsed.length < mockEntrepreneurs.length) {
+        setEntrepreneurs(mockEntrepreneurs);
+      } else {
+        setEntrepreneurs(parsed);
+      }
     }
     else setEntrepreneurs(mockEntrepreneurs);
 
@@ -122,6 +133,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
       else setEvents(parsed);
     }
     else setEvents(mockEvents);
+
+    const storedJobs = localStorage.getItem("df_jobs");
+    if (storedJobs) {
+      const parsed = JSON.parse(storedJobs);
+      if (parsed.length < mockJobs.length) setJobs(mockJobs);
+      else setJobs(parsed);
+    }
+    else setJobs(mockJobs);
 
     const storedActivities = localStorage.getItem("df_activities");
     if (storedActivities) setActivities(JSON.parse(storedActivities));
@@ -200,9 +219,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       ]);
     }
 
-    const storedSaved = localStorage.getItem("df_saved");
-    if (storedSaved) setSavedEntrepreneurs(JSON.parse(storedSaved));
-
     const storedChatMessages = localStorage.getItem("df_chat_messages");
     if (storedChatMessages) {
       setChatMessages(JSON.parse(storedChatMessages));
@@ -248,15 +264,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("df_categories", JSON.stringify(categories));
     localStorage.setItem("df_announcements", JSON.stringify(announcements));
     localStorage.setItem("df_events", JSON.stringify(events));
+    localStorage.setItem("df_jobs", JSON.stringify(jobs));
     localStorage.setItem("df_activities", JSON.stringify(activities));
     localStorage.setItem("df_connections", JSON.stringify(connections));
     localStorage.setItem("df_notifications", JSON.stringify(notifications));
-    localStorage.setItem("df_saved", JSON.stringify(savedEntrepreneurs));
     localStorage.setItem("df_chat_messages", JSON.stringify(chatMessages));
     localStorage.setItem("df_settings", JSON.stringify(settings));
-  }, [currentUser, entrepreneurs, categories, announcements, events, activities, connections, notifications, savedEntrepreneurs, chatMessages, settings, isClient]);
+  }, [currentUser, entrepreneurs, categories, announcements, events, jobs, activities, connections, notifications, chatMessages, settings, isClient]);
 
-  const login = (email: string, role: "Entrepreneur / Member" | "Core Member / Admin") => {
+  const login = (email: string, role: "Business / Member" | "Core Member / Admin" | "Student" | "General Member") => {
     const searchTerm = email.trim().toLowerCase();
     
     // Check for typos in Nilesh's email
@@ -268,10 +284,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
       (isNileshTypo && e.id === "e21")
     );
     
-    const id = foundUser ? foundUser.id : (role === "Entrepreneur / Member" ? "e1" : "e21");
+    let id = foundUser ? foundUser.id : "e1";
+    if (!foundUser) {
+      if (role === "Core Member / Admin") id = "e21";
+      if (role === "Student") id = "s1";
+      if (role === "General Member") id = "m1";
+    }
+
     const userRole = foundUser ? foundUser.membershipType : role;
     
-    setCurrentUser({ id, email: foundUser ? foundUser.email : (foundUser ? email : "nilesh@intechengg.com"), role: userRole });
+    let finalEmail = foundUser ? foundUser.email : email;
+    if (!foundUser && role === "Core Member / Admin" && email === "") finalEmail = "nilesh@intechengg.com";
+    if (!foundUser && role === "Student" && email === "") finalEmail = "student@demo.com";
+    if (!foundUser && role === "General Member" && email === "") finalEmail = "member@demo.com";
+    
+    setCurrentUser({ id, email: finalEmail, role: userRole });
   };
 
   const logout = () => {
@@ -317,7 +344,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       verified: false,
       membershipType: data.membershipType || "Entrepreneur / Member",
       memberSince: new Date().getFullYear().toString(),
-      status: data.status || "Pending",
+      status: data.status || "Active",
       profileImage: data.profileImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || "User")}&background=random`,
       ...data
     } as Entrepreneur;
@@ -367,14 +394,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const cancelConnectionRequest = (connectionId: string) => {
     setConnections(prev => prev.filter(c => c.id !== connectionId));
-  };
-
-  const toggleSaved = (entrepreneurId: string) => {
-    setSavedEntrepreneurs(prev => 
-      prev.includes(entrepreneurId) 
-        ? prev.filter(id => id !== entrepreneurId)
-        : [...prev, entrepreneurId]
-    );
   };
 
   const addAnnouncement = (announcement: Omit<Announcement, "id" | "createdAt">) => {
@@ -456,14 +475,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   return (
     <AppContext.Provider value={{
       currentUser, login, logout,
-      entrepreneurs, categories, announcements, events, activities, connections, notifications, savedEntrepreneurs,
+      entrepreneurs, categories, announcements, events, jobs, activities, connections, notifications,
       activeChatUserId, chatMessages, openChat, closeChat, sendMessage,
       updateProfile, updateEntrepreneurStatus,
       addEntrepreneur,
       updateEntrepreneur,
       addCategory, updateCategory, deleteCategory,
       addEvent, updateEvent, deleteEvent,
-      sendConnectionRequest, acceptConnectionRequest, rejectConnectionRequest, cancelConnectionRequest, toggleSaved, addAnnouncement, updateAnnouncement, deleteAnnouncement, markNotificationRead, markAllNotificationsRead,
+      sendConnectionRequest, acceptConnectionRequest, rejectConnectionRequest, cancelConnectionRequest, addAnnouncement, updateAnnouncement, deleteAnnouncement, markNotificationRead, markAllNotificationsRead,
       settings, updateSettings
     }}>
       {children}

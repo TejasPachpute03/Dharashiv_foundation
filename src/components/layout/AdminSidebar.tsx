@@ -5,20 +5,22 @@ import { usePathname, useRouter } from "next/navigation";
 import { 
   Network, LayoutDashboard, Users, UserCheck, 
   ListTree, Link as LinkIcon, Megaphone, Calendar, 
-  BarChart, Settings, LogOut 
+  BarChart, Settings, LogOut, Briefcase, Search, UserCircle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppContext } from "@/context/AppContext";
+import { ProfileCompletionAvatar } from "@/components/ui/ProfileCompletionAvatar";
 
 export function AdminSidebar() {
   const pathname = usePathname();
-  const { logout, entrepreneurs, currentUser } = useAppContext();
+  const { logout, entrepreneurs, announcements, currentUser } = useAppContext();
   const router = useRouter();
 
-  const pendingCount = entrepreneurs.filter(e => e.status === "Pending").length;
+  const pendingCount = announcements.filter(a => a.status === "Pending").length;
 
   const mainNav = [
     { href: "/admin", label: "Dashboard", icon: <LayoutDashboard className="w-5 h-5" /> },
+    { href: "/admin/discover", label: "Discover", icon: <Search className="w-5 h-5" /> },
   ];
   
   const managementNav = [
@@ -27,11 +29,16 @@ export function AdminSidebar() {
     { href: "/admin/categories", label: "Categories", icon: <ListTree className="w-5 h-5" /> },
     { href: "/admin/network", label: "My Network", icon: <Network className="w-5 h-5" /> },
     { href: "/admin/events", label: "Events", icon: <Calendar className="w-5 h-5" /> },
+    { href: "/admin/jobs", label: "Jobs/Vacancies", icon: <Briefcase className="w-5 h-5" /> },
   ];
 
   const systemNav = [
     { href: "/admin/announcements", label: "Announcements", icon: <Megaphone className="w-5 h-5" /> },
     { href: "/admin/settings", label: "Settings", icon: <Settings className="w-5 h-5" /> },
+  ];
+
+  const accountNav = [
+    { href: "/admin/profile", label: "My Profile", icon: <UserCircle className="w-5 h-5" /> },
   ];
 
   const handleLogout = () => {
@@ -93,14 +100,17 @@ export function AdminSidebar() {
             <p className="px-6 text-[10px] font-bold text-black/60 uppercase tracking-wider mb-2">System</p>
             {systemNav.map((item) => <NavItem key={item.href} item={item} />)}
           </div>
+
+          <div className="mb-6">
+            <p className="px-6 text-[10px] font-bold text-black/60 uppercase tracking-wider mb-2">Account</p>
+            {accountNav.map((item) => <NavItem key={item.href} item={item} />)}
+          </div>
         </nav>
 
         <div className="p-4 border-t border-black/10 hover:bg-black/5 transition-colors">
           <div className="flex items-center justify-between">
             <Link href="/admin/profile" className="flex items-center space-x-3 cursor-pointer group flex-1 min-w-0">
-              <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground font-bold shrink-0 overflow-hidden group-hover:ring-2 ring-primary transition-all">
-                <img src={currentProfile?.profileImage || "https://i.pravatar.cc/150?u=admin"} alt="Admin" className="h-full w-full object-cover" />
-              </div>
+              <ProfileCompletionAvatar profile={currentProfile} size={36} strokeWidth={2.5} className="group-hover:ring-2 ring-primary/50 transition-all rounded-full" />
               <div className="flex flex-col min-w-0 pr-2">
                 <span className="text-sm font-semibold truncate group-hover:text-primary text-black transition-colors" title={currentProfile?.name || "Admin User"}>{currentProfile?.name || "Admin User"}</span>
                 <span className="text-xs text-black/60 truncate group-hover:text-black/80 transition-colors" title={currentUser?.email}>{currentUser?.email}</span>

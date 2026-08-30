@@ -32,6 +32,17 @@ export default function EditProfilePage() {
     setFormData((prev: any) => ({ ...prev, [name]: value }));
   };
 
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev: any) => ({
+      ...prev,
+      address: {
+        ...(prev.address || { taluka: "", district: "Dharashiv", currentCity: "" }),
+        [name]: value
+      }
+    }));
+  };
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -168,6 +179,40 @@ export default function EditProfilePage() {
 
         <Card>
           <CardHeader>
+            <CardTitle>Address Information</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Taluka</label>
+                <select 
+                  name="taluka" 
+                  value={formData.address?.taluka || ""} 
+                  onChange={(e) => handleAddressChange(e as any)} 
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  required
+                >
+                  <option value="" disabled>Select Taluka</option>
+                  {["Dharashiv", "Tuljapur", "Omerga", "Lohara", "Kalamb", "Bhum", "Paranda", "Washi"].map(t => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">District</label>
+                <Input name="district" value="Dharashiv" readOnly className="bg-muted text-muted-foreground cursor-not-allowed" />
+                <p className="text-xs text-muted-foreground mt-1">Platform is exclusive to Dharashiv community.</p>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Current City</label>
+                <Input name="currentCity" value={formData.address?.currentCity || ""} onChange={handleAddressChange} placeholder="Where are you currently living?" required />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
             <CardTitle>Business Information</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -191,6 +236,21 @@ export default function EditProfilePage() {
               <div className="space-y-2">
                 <label className="text-sm font-medium">Years in Business</label>
                 <Input name="yearsInBusiness" value={formData.yearsInBusiness} onChange={handleChange} />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Turnover Range</label>
+                <select 
+                  name="turnoverRange" 
+                  value={formData.turnoverRange || ""} 
+                  onChange={handleChange} 
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                >
+                  <option value="" disabled>Select Range</option>
+                  <option value="0-40L">0-40L</option>
+                  <option value="40L-1CR">40L-1CR</option>
+                  <option value="1CR-5CR">1CR-5CR</option>
+                  <option value="5CRPLUS">5CR+</option>
+                </select>
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Website</label>

@@ -1,4 +1,4 @@
-export type MembershipType = "Entrepreneur / Member" | "Core Member / Admin";
+export type MembershipType = "Business / Member" | "Core Member / Admin" | "Student" | "General Member";
 export type MemberStatus = "Active" | "Pending" | "Rejected" | "Inactive";
 export type ConnectionStatus = "Not Connected" | "Request Sent" | "Request Received" | "Connected";
 
@@ -18,7 +18,14 @@ export interface Entrepreneur {
   category: string;
   industry: string;
   location: string;
+  address?: {
+    village?: string;
+    taluka: string;
+    district: string;
+    currentCity: string;
+  };
   yearsInBusiness: string;
+  turnoverRange?: "0-40L" | "40L-1CR" | "1CR-5CR" | "5CRPLUS";
   description: string;
   services: string[];
   targetCustomers: string[];
@@ -70,9 +77,11 @@ export interface Announcement {
   description: string;
   category: "Important" | "Event" | "Community" | "Business" | "Foundation Update";
   author: string;
-  status: "Published" | "Draft";
+  status: "Published" | "Draft" | "Pending" | "Rejected";
   createdAt: string;
   publishDate: string;
+  coverImage?: string;
+  attachments?: { name: string; url: string; type: 'image' | 'pdf' }[];
 }
 
 export interface Event {
@@ -98,4 +107,18 @@ export interface Activity {
   id: string;
   message: string;
   createdAt: string;
+}
+
+export interface Job {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  type: "Full-time" | "Part-time" | "Contract" | "Internship";
+  description: string;
+  requirements: string[];
+  salary?: string;
+  authorId: string;
+  createdAt: string;
+  status: "Open" | "Closed";
 }

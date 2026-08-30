@@ -24,7 +24,9 @@ function AdminMembersContent() {
   const searchParams = useSearchParams();
   
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState(searchParams.get("status") || "All");
+  const [categoryFilter, setCategoryFilter] = useState("All");
+  const [locationFilter, setLocationFilter] = useState("All");
+  const [membershipFilter, setMembershipFilter] = useState("All");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMember, setEditingMember] = useState<Entrepreneur | null>(null);
 
@@ -46,11 +48,17 @@ function AdminMembersContent() {
     }
   };
 
+  const categories = Array.from(new Set(entrepreneurs.map(e => e.category).filter(Boolean))).sort();
+  const locations = Array.from(new Set(entrepreneurs.map(e => e.location?.split(',')[0].trim()).filter(Boolean))).sort();
+  const memberships = Array.from(new Set(entrepreneurs.map(e => e.membershipType).filter(Boolean))).sort();
+
   const filteredMembers = entrepreneurs.filter(e => {
     const matchesSearch = e.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           e.companyName?.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === "All" || e.status === statusFilter;
-    return matchesSearch && matchesStatus;
+    const matchesCategory = categoryFilter === "All" || e.category === categoryFilter;
+    const matchesLocation = locationFilter === "All" || e.location?.includes(locationFilter);
+    const matchesMembership = membershipFilter === "All" || e.membershipType === membershipFilter;
+    return matchesSearch && matchesCategory && matchesLocation && matchesMembership;
   });
 
   const getInitials = (name: string) => {
@@ -113,24 +121,43 @@ function AdminMembersContent() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <div className="flex items-center gap-3 w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0">
-            <div className="flex items-center bg-muted/50 rounded-full border px-3 py-1.5 shrink-0">
-              <Filter className="h-4 w-4 text-muted-foreground mr-2" />
-              <select 
-                className="bg-transparent text-sm font-medium outline-none text-foreground appearance-none cursor-pointer pr-4"
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <option value="All">All Statuses</option>
-                <option value="Active">Active</option>
-                <option value="Pending">Pending</option>
-                <option value="Rejected">Rejected</option>
-              </select>
+          <div className="flex items-center gap-3 w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0 no-scrollbar">
+            <div className="flex items-center bg-muted/50 rounded-full border px-3 py-1.5 shrink-0 divide-x divide-border">
+              <div className="flex items-center pr-2">
+                <Filter className="h-4 w-4 text-muted-foreground mr-2" />
+                <select 
+                  className="bg-transparent text-sm font-medium outline-none text-foreground cursor-pointer"
+                  value={categoryFilter}
+                  onChange={(e) => setCategoryFilter(e.target.value)}
+                >
+                  <option value="All">Category</option>
+                  {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+
+              <div className="px-2">
+                <select 
+                  className="bg-transparent text-sm font-medium outline-none text-foreground cursor-pointer"
+                  value={locationFilter}
+                  onChange={(e) => setLocationFilter(e.target.value)}
+                >
+                  <option value="All">Location</option>
+                  {locations.map(l => <option key={l} value={l}>{l}</option>)}
+                </select>
+              </div>
+
+              <div className="pl-2">
+                <select 
+                  className="bg-transparent text-sm font-medium outline-none text-foreground cursor-pointer"
+                  value={membershipFilter}
+                  onChange={(e) => setMembershipFilter(e.target.value)}
+                >
+                  <option value="All">Member Type</option>
+                  {memberships.map(m => <option key={m} value={m}>{m}</option>)}
+                </select>
+              </div>
             </div>
             
-            <Button variant="outline" className="rounded-full shrink-0 h-9 px-4 text-sm bg-background">
-              <Columns className="mr-2 h-4 w-4" /> Columns
-            </Button>
             <Button variant="outline" className="rounded-full shrink-0 h-9 px-4 text-sm bg-background">
               <Download className="mr-2 h-4 w-4" /> Export
             </Button>
@@ -141,15 +168,14 @@ function AdminMembersContent() {
         </div>
         
         {/* Table */}
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto no-scrollbar">
           <table className="w-full text-sm text-left">
             <thead className="text-xs text-muted-foreground bg-background border-b border-muted">
               <tr>
                 <th className="px-6 py-4 font-medium font-semibold">Client</th>
                 <th className="px-6 py-4 font-medium font-semibold">Contact</th>
                 <th className="px-6 py-4 font-medium font-semibold">Join Date</th>
-                <th className="px-6 py-4 font-medium font-semibold">Latest Remark</th>
-                <th className="px-6 py-4 font-medium font-semibold whitespace-nowrap">Status</th>
+
                 <th className="px-6 py-4 font-medium font-semibold text-right whitespace-nowrap">Actions</th>
               </tr>
             </thead>
@@ -178,14 +204,7 @@ function AdminMembersContent() {
                   <td className="px-6 py-4">
                     <div className="font-medium text-foreground text-sm">{member.memberSince}</div>
                   </td>
-                  <td className="px-6 py-4 max-w-[200px]">
-                    <div className="text-muted-foreground text-sm truncate">
-                      {member.status === "Pending" ? "Awaiting review for approval." : "Profile active and verified."}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <StatusBadge status={member.status} />
-                  </td>
+
                   <td className="px-6 py-4 text-right whitespace-nowrap">
                     <div className="flex items-center justify-end gap-2">
                       <select 

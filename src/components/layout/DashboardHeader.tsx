@@ -3,6 +3,7 @@
 import { Menu, Bell, Moon, Search, Sun } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Avatar } from "@/components/ui/Avatar";
+import { ProfileCompletionAvatar } from "@/components/ui/ProfileCompletionAvatar";
 import { useAppContext } from "@/context/AppContext";
 import { usePathname, useRouter } from "next/navigation";
 import { Input } from "@/components/ui/Input";
@@ -131,7 +132,7 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
                 Online
               </span>
             </div>
-            <Avatar size="sm" src={currentProfile?.profileImage} fallback={currentProfile?.name?.charAt(0)} />
+            <ProfileCompletionAvatar profile={currentProfile} size={32} strokeWidth={2.5} />
           </Link>
         </div>
       </div>

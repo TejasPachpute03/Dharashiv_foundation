@@ -128,12 +128,12 @@ export default function LandingPage() {
                         <p className="font-medium">{ent.companyName}</p>
                         <p className="text-sm text-muted-foreground flex items-center mt-1">
                           <span className="inline-block w-2 h-2 rounded-full bg-accent mr-2"></span>
-                          {ent.category}
+                          {ent.category || "Uncategorized"}
                         </p>
                       </div>
                       <div className="mb-4 text-sm text-muted-foreground">
-                        <p className="mb-1">📍 {ent.location}</p>
-                        <p><strong>Looking for:</strong> <span className="line-clamp-1">{ent.lookingFor.join(" • ")}</span></p>
+                        <p className="mb-1">📍 {ent.location || "Location not specified"}</p>
+                        <p><strong>Looking for:</strong> <span className="line-clamp-1">{ent.lookingFor?.join(" • ") || "Not specified"}</span></p>
                       </div>
                     </div>
                     <div className="border-t bg-muted/30 p-4 flex gap-3">

@@ -13,7 +13,7 @@ import { Entrepreneur } from "@/types";
 
 export default function EntrepreneurProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const { entrepreneurs, currentUser, connections, sendConnectionRequest, savedEntrepreneurs, toggleSaved, updateEntrepreneur } = useAppContext();
+  const { entrepreneurs, currentUser, connections, sendConnectionRequest, updateEntrepreneur } = useAppContext();
   
   const [profile, setProfile] = useState<Entrepreneur | null>(null);
   const [showConnectionsModal, setShowConnectionsModal] = useState(false);
@@ -66,7 +66,6 @@ export default function EntrepreneurProfilePage({ params }: { params: Promise<{ 
     }
   };
 
-  const isSaved = savedEntrepreneurs.includes(profile.id);
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 animate-in fade-in duration-500">
@@ -126,13 +125,7 @@ export default function EntrepreneurProfilePage({ params }: { params: Promise<{ 
                     {connectAction === "Connect" ? <UserPlus className="mr-2 h-4 w-4" /> : <Network className="mr-2 h-4 w-4" />}
                     {connectAction}
                   </Button>
-                  <Button 
-                    variant={isSaved ? "secondary" : "outline"} 
-                    className="w-full"
-                    onClick={() => toggleSaved(profile.id)}
-                  >
-                    {isSaved ? "Favourited" : "Favourite"}
-                  </Button>
+
                   <Button 
                     variant="outline" 
                     className="w-full"
@@ -203,7 +196,7 @@ export default function EntrepreneurProfilePage({ params }: { params: Promise<{ 
                 {profile.description || "No description provided."}
               </p>
               
-              <div className="grid grid-cols-2 gap-4 mt-6 pt-6 border-t">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6 pt-6 border-t">
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">Industry</p>
                   <p className="font-medium">{profile.industry}</p>
@@ -212,6 +205,12 @@ export default function EntrepreneurProfilePage({ params }: { params: Promise<{ 
                   <p className="text-sm text-muted-foreground mb-1">Years in Business</p>
                   <p className="font-medium">{profile.yearsInBusiness}</p>
                 </div>
+                {profile.turnoverRange && (
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-1">Turnover</p>
+                    <p className="font-medium">{profile.turnoverRange === "5CRPLUS" ? "5CR+" : profile.turnoverRange}</p>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

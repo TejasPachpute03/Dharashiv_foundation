@@ -22,7 +22,7 @@ export function MemberFormModal({ isOpen, onClose, onSubmit, initialData }: Memb
     designation: "",
     category: "",
     location: "",
-    membershipType: "Entrepreneur / Member",
+    membershipType: "Business / Member",
   });
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export function MemberFormModal({ isOpen, onClose, onSubmit, initialData }: Memb
         designation: "",
         category: "",
         location: "",
-        membershipType: "Entrepreneur / Member",
+        membershipType: "Business / Member",
       });
     }
   }, [initialData, isOpen]);
@@ -47,6 +47,17 @@ export function MemberFormModal({ isOpen, onClose, onSubmit, initialData }: Memb
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      address: {
+        ...(prev.address || { taluka: "", district: "Dharashiv", currentCity: "" }),
+        [name]: value
+      }
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -96,6 +107,39 @@ export function MemberFormModal({ isOpen, onClose, onSubmit, initialData }: Memb
                 <label className="text-sm font-medium">Location</label>
                 <Input required name="location" value={formData.location || ""} onChange={handleChange} placeholder="Pune, Maharashtra" />
               </div>
+            </div>
+
+            <div className="pt-4 border-t mt-4">
+              <h3 className="font-semibold mb-4">Address Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Taluka</label>
+                  <select 
+                    name="taluka" 
+                    value={formData.address?.taluka || ""} 
+                    onChange={(e) => handleAddressChange(e as any)} 
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    required
+                  >
+                    <option value="" disabled>Select Taluka</option>
+                    {["Dharashiv", "Tuljapur", "Omerga", "Lohara", "Kalamb", "Bhum", "Paranda", "Washi"].map(t => (
+                      <option key={t} value={t}>{t}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">District</label>
+                  <Input name="district" value="Dharashiv" readOnly className="bg-muted text-muted-foreground cursor-not-allowed" />
+                  <p className="text-xs text-muted-foreground mt-1">Exclusive to Dharashiv.</p>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Current City</label>
+                  <Input name="currentCity" value={formData.address?.currentCity || ""} onChange={handleAddressChange} placeholder="Where are you currently living?" required />
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
               <div className="space-y-2">
                 <label className="text-sm font-medium">Membership Type</label>
                 <select 

@@ -1,0 +1,131 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { 
+  LayoutDashboard, Search, Users, Calendar, 
+  Briefcase, Megaphone, Bell, UserCircle, Settings, LogOut 
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useAppContext } from "@/context/AppContext";
+import { ProfileCompletionAvatar } from "@/components/ui/ProfileCompletionAvatar";
+
+interface SidebarProps {
+  isOpen?: boolean;
+  setIsOpen?: (open: boolean) => void;
+}
+
+export function MemberSidebar({ isOpen, setIsOpen }: SidebarProps) {
+  const pathname = usePathname();
+  const { currentUser, entrepreneurs, logout } = useAppContext();
+  const router = useRouter();
+
+  const currentProfile = entrepreneurs.find(e => e.id === currentUser?.id);
+
+  const mainNav = [
+    { href: "/member", label: "Dashboard", icon: <LayoutDashboard className="w-5 h-5" /> },
+    { href: "/member/discover", label: "Discover", icon: <Search className="w-5 h-5" /> },
+  ];
+
+  const networkNav = [
+    { href: "/member/network", label: "My Network", icon: <Users className="w-5 h-5" /> },
+    { href: "/member/events", label: "Events", icon: <Calendar className="w-5 h-5" /> },
+    { href: "/member/jobs", label: "Jobs/Vacancies", icon: <Briefcase className="w-5 h-5" /> },
+    { href: "/member/announcements", label: "Announcements", icon: <Megaphone className="w-5 h-5" /> },
+    { href: "/member/notifications", label: "Notifications", icon: <Bell className="w-5 h-5" /> },
+  ];
+
+  const accountNav = [
+    { href: "/member/profile", label: "My Profile", icon: <UserCircle className="w-5 h-5" /> },
+    { href: "/member/settings", label: "Settings", icon: <Settings className="w-5 h-5" /> },
+  ];
+
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+  };
+
+  const NavItem = ({ item }: { item: any }) => {
+    const isActive = pathname === item.href || (pathname.startsWith(item.href) && item.href !== "/member");
+    // Handle the exact root path match for /member
+    const isExactDashboard = item.href === "/member" && pathname === "/member";
+    const highlight = isExactDashboard || (item.href !== "/member" && isActive);
+
+    return (
+      <Link
+        href={item.href}
+        onClick={() => setIsOpen?.(false)}
+        className={cn(
+          "flex items-center justify-between px-3 py-2.5 mx-2 rounded-lg transition-colors text-sm font-medium group mb-1",
+          highlight 
+            ? "bg-primary text-primary-foreground shadow-sm" 
+            : "text-black hover:bg-black/5"
+        )}
+      >
+        <div className="flex items-center space-x-3">
+          <span className={cn(highlight ? "text-primary-foreground" : "text-black/70 group-hover:text-black")}>
+            {item.icon}
+          </span>
+          <span>{item.label}</span>
+        </div>
+      </Link>
+    );
+  };
+
+  return (
+    <>
+      {/* Mobile overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-black/50 md:hidden"
+          onClick={() => setIsOpen?.(false)}
+        />
+      )}
+      
+      <div className={cn(
+        "h-screen w-64 flex-col fixed inset-y-0 z-50 bg-white/40 backdrop-blur-2xl border-r border-white/40 text-black transition-transform duration-300 md:flex md:translate-x-0 shadow-lg",
+        isOpen ? "translate-x-0 flex" : "-translate-x-full hidden"
+      )}>
+        <Link href="/member" className="p-6 flex items-center space-x-3 mb-2 hover:opacity-80 transition-opacity">
+          <img src="/logo.png" alt="Dharashiv Foundation Logo" className="h-10 w-10 object-contain rounded-full" />
+          <span className="font-bold text-lg tracking-tight">Dharashiv Foundation</span>
+        </Link>
+
+      <nav className="flex-1 overflow-y-auto">
+        <div className="mb-6">
+          <p className="px-6 text-[10px] font-bold text-black/60 uppercase tracking-wider mb-2">Main</p>
+          {mainNav.map((item) => <NavItem key={item.href} item={item} />)}
+        </div>
+
+        <div className="mb-6">
+          <p className="px-6 text-[10px] font-bold text-black/60 uppercase tracking-wider mb-2">Member Portal</p>
+          {networkNav.map((item) => <NavItem key={item.href} item={item} />)}
+        </div>
+
+        <div className="mb-6">
+          <p className="px-6 text-[10px] font-bold text-black/60 uppercase tracking-wider mb-2">Account</p>
+          {accountNav.map((item) => <NavItem key={item.href} item={item} />)}
+        </div>
+      </nav>
+
+      <div className="p-4 border-t border-black/10">
+        <div className="flex items-center justify-between">
+          <Link href="/member/profile" className="flex items-center space-x-3 cursor-pointer group flex-1 min-w-0">
+            <ProfileCompletionAvatar profile={currentProfile} size={36} strokeWidth={2.5} />
+            <div className="flex flex-col min-w-0 pr-2">
+              <span className="text-sm font-semibold truncate group-hover:text-primary text-black transition-colors" title={currentProfile?.name || "General Member"}>{currentProfile?.name || "General Member"}</span>
+              <span className="text-xs text-black/60 truncate group-hover:text-black/80 transition-colors">Member</span>
+            </div>
+          </Link>
+          <button 
+            onClick={handleLogout}
+            className="p-2 text-black/60 hover:text-black hover:bg-black/5 rounded transition-colors shrink-0"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+    </>
+  );
+}
