@@ -12,7 +12,7 @@ export default function StudentDashboardOverview() {
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div>
-        <h2 className="text-3xl font-bold tracking-tight">Welcome, {currentProfile?.name.split(' ')[0] || "Student"} 🎓</h2>
+        <h2 className="text-3xl font-bold tracking-tight">Welcome, {currentProfile?.name?.split(' ')[0] || "Student"} 🎓</h2>
         <p className="text-muted-foreground mt-2">Explore opportunities, submit ideas, and discover your path.</p>
       </div>
 
