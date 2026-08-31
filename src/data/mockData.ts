@@ -185,7 +185,6 @@ export const mockEntrepreneurs: Entrepreneur[] = [
     id: "e2",
     name: "Aditi Sharma",
     designation: "Co-Founder",
-    profileImage: "",
     companyName: "TechNova Solutions",
     category: "Technology",
     industry: "IT Services",

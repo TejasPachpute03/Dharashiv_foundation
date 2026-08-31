@@ -295,7 +295,12 @@ export default function LandingPage() {
     mockEntrepreneurs.find(e => e.id === "e21") || mockEntrepreneurs[1],
     mockEntrepreneurs.find(e => e.id === "e2") || mockEntrepreneurs[2],
     mockEntrepreneurs.find(e => e.id === "m1") || mockEntrepreneurs[3],
-  ];
+  ].map(e => {
+    if (e.profileImage && e.profileImage.includes('ui-avatars.com')) {
+      return { ...e, profileImage: "" };
+    }
+    return e;
+  });
   const prefersReducedMotion = useReducedMotion();
   
   return (
