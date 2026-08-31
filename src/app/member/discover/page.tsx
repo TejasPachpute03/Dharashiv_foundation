@@ -123,7 +123,7 @@ function DirectoryContent() {
     <div className="space-y-6 animate-in fade-in duration-500">
       <div>
         <h2 className="text-2xl font-bold tracking-tight">
-          Find Entrepreneurs
+          Find Members
         </h2>
         <p className="text-muted-foreground mt-1">
           Discover businesses, professionals and potential partners across the network.
