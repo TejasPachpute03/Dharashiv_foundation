@@ -144,7 +144,7 @@ export default function AdminAnnouncementsPage() {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Category</label>
                   <select 
-                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm"
+                    className="flex h-10 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                     value={formData.category}
                     onChange={e => setFormData({...formData, category: e.target.value as any})}
                   >
@@ -158,7 +158,7 @@ export default function AdminAnnouncementsPage() {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Status</label>
                   <select 
-                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm"
+                    className="flex h-10 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                     value={formData.status}
                     onChange={e => setFormData({...formData, status: e.target.value as any})}
                   >

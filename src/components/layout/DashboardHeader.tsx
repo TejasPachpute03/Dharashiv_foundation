@@ -88,8 +88,8 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
             }}>
               <Input 
                 ref={searchInputRef}
-                placeholder="Search clients, emails, phone numbers..." 
-                className="pl-9 pr-12 rounded-full bg-muted/30 border-muted-foreground/20 h-10 w-full"
+                placeholder="Search members, businesses, opportunities..." 
+                className="pl-9 pr-12 rounded-full bg-card border-border h-10 w-full focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary transition-all shadow-sm"
               />
             </form>
             <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center pointer-events-none">

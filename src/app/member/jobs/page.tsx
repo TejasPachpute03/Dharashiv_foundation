@@ -79,7 +79,7 @@ export default function JobsPage() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Job Type</label>
-                  <select className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm" value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})} >
+                  <select className="flex h-10 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary" value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})} >
                     <option value="Full-time">Full-time</option>
                     <option value="Part-time">Part-time</option>
                     <option value="Contract">Contract</option>
@@ -142,8 +142,10 @@ export default function JobsPage() {
 
       <div className="space-y-4">
         {jobs.length === 0 ? (
-          <div className="text-center py-12 border border-dashed rounded-lg bg-card">
-            <Briefcase className="mx-auto h-8 w-8 text-muted-foreground mb-3 opacity-50" />
+          <div className="text-center py-12 border border-dashed border-orange-200/60 rounded-2xl bg-card shadow-sm">
+            <div className="mx-auto h-12 w-12 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+              <Briefcase className="h-6 w-6 text-primary" />
+            </div>
             <h3 className="text-lg font-medium mb-1">No jobs available</h3>
             <p className="text-sm text-muted-foreground">Check back later for new opportunities.</p>
           </div>

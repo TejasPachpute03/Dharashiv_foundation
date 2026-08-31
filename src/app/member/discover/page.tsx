@@ -156,7 +156,7 @@ function DirectoryContent() {
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-muted-foreground">Category</label>
               <select 
-                className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                className="flex h-10 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
               >
@@ -169,7 +169,7 @@ function DirectoryContent() {
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-muted-foreground">Location</label>
               <select 
-                className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                className="flex h-10 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 value={selectedLocation}
                 onChange={(e) => {
                   setSelectedLocation(e.target.value);
@@ -186,7 +186,7 @@ function DirectoryContent() {
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-muted-foreground">Taluka</label>
                 <select 
-                  className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  className="flex h-10 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                   value={selectedTaluka}
                   onChange={(e) => setSelectedTaluka(e.target.value)}
                 >
@@ -200,7 +200,7 @@ function DirectoryContent() {
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-muted-foreground">Looking For</label>
               <select 
-                className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                className="flex h-10 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 value={selectedLookingFor}
                 onChange={(e) => setSelectedLookingFor(e.target.value)}
               >
@@ -213,7 +213,7 @@ function DirectoryContent() {
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-muted-foreground">Sort By</label>
               <select 
-                className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                className="flex h-10 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
               >
@@ -247,9 +247,9 @@ function DirectoryContent() {
           ))}
         </div>
       ) : (
-        <div className="text-center py-20 border rounded-xl bg-card border-dashed">
-          <div className="mx-auto w-12 h-12 bg-muted rounded-full flex items-center justify-center mb-4">
-            <Search className="h-6 w-6 text-muted-foreground" />
+        <div className="text-center py-20 border rounded-2xl bg-card border-dashed border-orange-200/60 shadow-sm">
+          <div className="mx-auto w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+            <Search className="h-6 w-6 text-primary" />
           </div>
           <h3 className="text-lg font-semibold mb-2">No entrepreneurs found</h3>
           <p className="text-muted-foreground mb-6">Try changing your filters or search terms.</p>

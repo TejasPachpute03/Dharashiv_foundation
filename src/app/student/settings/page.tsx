@@ -11,8 +11,10 @@ export default function SettingsPage() {
       </div>
 
       <div className="space-y-4">
-        <div className="text-center py-12 border border-dashed rounded-lg bg-card">
-          <Settings className="mx-auto h-8 w-8 text-muted-foreground mb-3 opacity-50" />
+        <div className="text-center py-12 border border-dashed border-orange-200/60 rounded-2xl bg-card shadow-sm">
+          <div className="mx-auto h-12 w-12 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+            <Settings className="h-6 w-6 text-primary" />
+          </div>
           <h3 className="text-lg font-medium mb-1">Settings</h3>
           <p className="text-sm text-muted-foreground">Account settings options will appear here.</p>
         </div>

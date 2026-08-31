@@ -12,7 +12,7 @@ export default function AdminDashboardPage() {
   return (
     <div className="space-y-6 animate-in fade-in duration-500 pb-10">
       <div>
-        <h2 className="text-3xl font-bold tracking-tight text-secondary">Dashboard Overview</h2>
+        <h2 className="text-3xl font-bold tracking-tight text-foreground">Dashboard Overview</h2>
         <p className="text-muted-foreground mt-1">Monitor the network's growth and recent activities.</p>
       </div>
 

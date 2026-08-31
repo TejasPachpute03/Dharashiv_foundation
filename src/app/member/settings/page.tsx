@@ -67,14 +67,14 @@ export default function SettingsPage() {
           <nav className="flex flex-col space-y-1">
             <button 
               onClick={() => setActiveTab("notifications")}
-              className={`flex items-center space-x-3 px-3 py-2 rounded-md font-medium text-sm text-left transition-colors ${activeTab === 'notifications' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}
+              className={`flex items-center space-x-3 px-3 py-2 rounded-xl font-medium text-sm text-left transition-colors ${activeTab === 'notifications' ? 'bg-orange-100 text-primary' : 'text-muted-foreground hover:bg-muted'}`}
             >
               <Bell className="w-4 h-4" />
               <span>Notifications</span>
             </button>
             <button 
               onClick={() => setActiveTab("privacy")}
-              className={`flex items-center space-x-3 px-3 py-2 rounded-md font-medium text-sm text-left transition-colors ${activeTab === 'privacy' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}
+              className={`flex items-center space-x-3 px-3 py-2 rounded-xl font-medium text-sm text-left transition-colors ${activeTab === 'privacy' ? 'bg-orange-100 text-primary' : 'text-muted-foreground hover:bg-muted'}`}
             >
               <Eye className="w-4 h-4" />
               <span>Privacy</span>

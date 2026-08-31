@@ -52,7 +52,7 @@ export function DashboardActionGrid({ role }: DashboardActionGridProps) {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-5xl font-bold tracking-tight flex items-center gap-3">
               People You May Know 
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-blue-700 text-sm font-bold border border-blue-200">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-orange-100 text-primary text-sm font-bold border border-orange-200">
                 {peopleYouMayKnowCount}
               </span>
             </h2>
@@ -73,7 +73,7 @@ export function DashboardActionGrid({ role }: DashboardActionGridProps) {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-5xl font-bold tracking-tight flex items-center gap-3">
               Opportunities 
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-blue-700 text-sm font-bold border border-blue-200">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-orange-100 text-primary text-sm font-bold border border-orange-200">
                 {opportunitiesCount}
               </span>
             </h2>
@@ -98,7 +98,7 @@ export function DashboardActionGrid({ role }: DashboardActionGridProps) {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-5xl font-bold tracking-tight flex items-center gap-3">
               Upcoming Events 
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-blue-700 text-sm font-bold border border-blue-200">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-orange-100 text-primary text-sm font-bold border border-orange-200">
                 {eventsCount}
               </span>
             </h2>
@@ -106,31 +106,31 @@ export function DashboardActionGrid({ role }: DashboardActionGridProps) {
               View All
             </Link>
           </div>
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 gap-4">
             {events.slice(0, 2).map(event => (
-              <Card key={event.id} className="overflow-hidden hover:shadow-md transition-shadow">
+              <Card variant="beige" key={event.id} className="overflow-hidden">
                 <CardContent className="p-0">
                   <div className="flex flex-col md:flex-row">
-                    <div className="bg-muted/50 p-6 md:w-56 flex flex-col justify-center items-center md:border-r border-b md:border-b-0 text-center shrink-0">
-                      <span className="font-bold text-lg text-primary">{event.date.split(' ')[0]}</span>
-                      <span className="font-semibold">{event.date.split(' ').slice(1).join(' ')}</span>
+                    <div className="bg-orange-50/50 p-6 md:w-32 flex flex-col justify-center items-center md:border-r border-[#EDE7E1] border-b md:border-b-0 text-center shrink-0">
+                      <span className="font-bold text-3xl text-primary">{event.date.split(' ')[0]}</span>
+                      <span className="font-semibold text-sm uppercase tracking-widest text-muted-foreground mt-1">{event.date.split(' ').slice(1).join(' ').substring(0, 3)}</span>
                     </div>
                     <div className="p-6 flex-1">
                       <div className="flex justify-between items-start mb-2">
-                        <Badge variant="secondary" className="mb-2">{event.category}</Badge>
-                        <span className="text-xs text-muted-foreground">Status: {event.status}</span>
+                        <Badge variant="secondary" className="bg-orange-100 text-primary uppercase text-[10px] border-orange-200/50 font-bold">{event.category}</Badge>
+                        <span className="text-xs font-medium text-green-600">{event.status}</span>
                       </div>
-                      <h3 className="text-xl font-bold mb-3">{event.title}</h3>
-                      <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
+                      <h3 className="text-xl font-bold mb-2 text-foreground">{event.title}</h3>
+                      <p className="text-foreground/80 text-sm line-clamp-2 mb-4">
                         {event.description}
                       </p>
-                      <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                      <div className="flex flex-wrap gap-4 text-sm text-muted-foreground font-medium">
                         <div className="flex items-center">
-                          <Clock className="w-4 h-4 mr-2" />
+                          <Clock className="w-4 h-4 mr-1.5 text-orange-400/80" />
                           {event.time}
                         </div>
                         <div className="flex items-center">
-                          <MapPin className="w-4 h-4 mr-2" />
+                          <MapPin className="w-4 h-4 mr-1.5 text-orange-400/80" />
                           {event.location}
                         </div>
                       </div>
@@ -148,7 +148,7 @@ export function DashboardActionGrid({ role }: DashboardActionGridProps) {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-5xl font-bold tracking-tight flex items-center gap-3">
               Community Updates 
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-blue-700 text-sm font-bold border border-blue-200">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-orange-100 text-primary text-sm font-bold border border-orange-200">
                 {updatesCount}
               </span>
             </h2>
@@ -156,30 +156,35 @@ export function DashboardActionGrid({ role }: DashboardActionGridProps) {
               View All
             </Link>
           </div>
-          <div className="grid grid-cols-1 gap-6">
-            {announcements.filter(a => a.status === "Published").slice(0, 2).map(ann => (
-              <Card key={ann.id} className="overflow-hidden hover:shadow-md transition-shadow relative">
-                <CardContent className="p-0">
-                  <div className="flex flex-col md:flex-row">
-                    <div className="bg-muted/30 p-6 md:w-48 flex flex-col justify-center items-center md:border-r border-b md:border-b-0 text-center shrink-0">
-                      <Calendar className="h-6 w-6 text-muted-foreground mb-2" />
-                      <span className="font-semibold">{new Date(ann.publishDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
-                    </div>
-                    <div className="p-6 flex-1">
-                      <div className="flex justify-between items-start mb-2">
-                        <Badge variant="outline" className="mb-2">{ann.category}</Badge>
-                        <span className="text-xs text-muted-foreground">By {ann.author}</span>
-                      </div>
-                      <h3 className="text-xl font-bold mb-2">{ann.title}</h3>
-                      <p className="text-muted-foreground text-sm line-clamp-2">
-                        {ann.description}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+          <Card variant="ivory" className="overflow-hidden">
+            {announcements.filter(a => a.status === "Published").slice(0, 2).map((ann, idx, arr) => (
+              <div 
+                key={ann.id} 
+                className={cn(
+                  "p-6 hover:bg-orange-50/30 transition-colors duration-200", 
+                  idx < arr.length - 1 ? "border-b border-[#E8E3DD]" : "",
+                  ann.category === "Important" || ann.category === "Foundation Update" ? "border-l-4 border-l-primary bg-orange-50/40" : ""
+                )}
+              >
+                <div className="flex justify-between items-start mb-2.5">
+                  <Badge 
+                    variant={ann.category === "Important" || ann.category === "Foundation Update" ? "default" : "secondary"} 
+                    className="uppercase text-[10px] tracking-wide font-bold"
+                  >
+                    [{ann.category}]
+                  </Badge>
+                  <span className="text-xs text-muted-foreground font-medium">By {ann.author}</span>
+                </div>
+                <h3 className="text-lg font-bold mb-1.5 text-foreground">{ann.title}</h3>
+                <p className="text-foreground/80 text-sm line-clamp-2 mb-3">
+                  {ann.description}
+                </p>
+                <div className="text-xs text-muted-foreground font-medium">
+                  Posted {new Date(ann.publishDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                </div>
+              </div>
             ))}
-          </div>
+          </Card>
         </div>
       )}
 
@@ -188,7 +193,7 @@ export function DashboardActionGrid({ role }: DashboardActionGridProps) {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-5xl font-bold tracking-tight flex items-center gap-3">
               Jobs Near You
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-blue-700 text-sm font-bold border border-blue-200">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-orange-100 text-primary text-sm font-bold border border-orange-200">
                 {jobsCount}
               </span>
             </h2>

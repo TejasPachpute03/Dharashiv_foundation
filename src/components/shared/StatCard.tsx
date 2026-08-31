@@ -14,7 +14,7 @@ interface StatCardProps {
 
 export function StatCard({ title, value, icon, description, className, href }: StatCardProps) {
   const content = (
-    <Card className={cn("overflow-hidden h-full transition-all", href && "hover:shadow-md hover:border-primary/50 cursor-pointer", className)}>
+    <Card className={cn("overflow-hidden h-full", href && "cursor-pointer", className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         <div className="h-4 w-4 text-muted-foreground">{icon}</div>

@@ -9,12 +9,12 @@ function Badge({ className, variant = "default", ...props }: BadgeProps) {
   return (
     <div
       className={cn(
-        "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+        "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-all duration-200 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 motion-reduce:transition-none motion-reduce:hover:scale-100",
         {
-          "border-transparent bg-primary text-primary-foreground hover:bg-primary/80": variant === "default",
-          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80": variant === "secondary",
-          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80": variant === "destructive",
-          "text-foreground": variant === "outline",
+          "border-transparent bg-primary text-primary-foreground hover:bg-primary/80 shadow-sm": variant === "default",
+          "border-primary bg-accent-light text-primary hover:bg-accent hover:text-accent-foreground shadow-sm": variant === "secondary",
+          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80 shadow-sm": variant === "destructive",
+          "text-foreground border-border": variant === "outline",
           "border-transparent bg-green-100 text-green-800 hover:bg-green-200": variant === "success",
         },
         className

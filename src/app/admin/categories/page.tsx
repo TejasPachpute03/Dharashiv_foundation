@@ -166,7 +166,7 @@ export default function AdminCategoriesPage() {
                               ))}
                             </div>
                           ) : (
-                            <div className="text-center py-8 text-muted-foreground bg-background rounded-lg border border-dashed">
+                            <div className="text-center py-8 text-muted-foreground bg-background rounded-xl border border-dashed border-orange-200/60">
                               No entrepreneurs found in this category.
                             </div>
                           )}

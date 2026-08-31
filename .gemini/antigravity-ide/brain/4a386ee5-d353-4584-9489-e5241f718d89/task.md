@@ -1,0 +1,18 @@
+- `[x]` Initialize tasks
+- `[x]` Update `src/app/globals.css` with new Orange/White palette and remove old gradients
+- `[x]` Update `src/components/layout/Navbar.tsx` to match the premium, sticky, white design
+- `[x]` Update `src/components/layout/Footer.tsx` for premium typography and layout
+- `[/]` Overhaul `src/app/page.tsx` integrating Framer Motion
+  - `[ ]` Hero Section
+  - `[ ]` Our Roots Connect Us
+  - `[ ]` What is Dharashiv Foundation
+  - `[ ]` Why are we building it
+  - `[ ]` A community for everyone
+  - `[ ]` Meet the people in your community (Entrepreneurs)
+  - `[ ]` How the community works
+  - `[ ]` One connection... (Opportunities)
+  - `[ ]` Stay connected (Events)
+  - `[ ]` Final CTA
+- `[ ]` Verify responsive design and Framer Motion integration
+- `[ ]` Run `npm run build` and resolve errors
+- `[ ]` Final visual QA

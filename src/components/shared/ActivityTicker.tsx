@@ -65,7 +65,7 @@ export function ActivityTicker() {
               <span className="text-black/30 mx-4">•</span>
 
               <span className="flex items-center text-black/80 whitespace-nowrap">
-                <Briefcase className="w-4 h-4 mr-2 text-blue-500 shrink-0" />
+                <Briefcase className="w-4 h-4 mr-2 text-indigo-500 shrink-0" />
                 <span className="font-bold text-black mr-1">{newJobsCount}</span> New Jobs Available
               </span>
 

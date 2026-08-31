@@ -79,8 +79,10 @@ function NetworkContent() {
         {activeTab === "connections" && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {connected.length === 0 ? (
-              <div className="col-span-full text-center py-12 border border-dashed rounded-lg bg-card">
-                <Users className="mx-auto h-8 w-8 text-muted-foreground mb-3 opacity-50" />
+              <div className="col-span-full text-center py-12 border border-dashed border-orange-200/60 rounded-2xl bg-card shadow-sm">
+                <div className="mx-auto h-12 w-12 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+                  <Users className="h-6 w-6 text-primary" />
+                </div>
                 <h3 className="text-lg font-medium mb-1">No connections yet</h3>
                 <p className="text-sm text-muted-foreground mb-4">Start discovering entrepreneurs to build your network.</p>
                 <Button asChild><Link href="/dashboard/directory">Discover Entrepreneurs</Link></Button>
@@ -120,8 +122,10 @@ function NetworkContent() {
         {activeTab === "received" && (
           <div className="space-y-4">
             {received.length === 0 ? (
-              <div className="text-center py-12 border border-dashed rounded-lg bg-card">
-                <UserCheck className="mx-auto h-8 w-8 text-muted-foreground mb-3 opacity-50" />
+              <div className="text-center py-12 border border-dashed border-orange-200/60 rounded-2xl bg-card shadow-sm">
+                <div className="mx-auto h-12 w-12 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+                  <UserCheck className="h-6 w-6 text-primary" />
+                </div>
                 <h3 className="text-lg font-medium mb-1">No pending requests</h3>
                 <p className="text-sm text-muted-foreground">You don't have any pending connection requests.</p>
               </div>
@@ -155,8 +159,10 @@ function NetworkContent() {
         {activeTab === "sent" && (
           <div className="space-y-4">
             {sent.length === 0 ? (
-              <div className="text-center py-12 border border-dashed rounded-lg bg-card">
-                <UserPlus className="mx-auto h-8 w-8 text-muted-foreground mb-3 opacity-50" />
+              <div className="text-center py-12 border border-dashed border-orange-200/60 rounded-2xl bg-card shadow-sm">
+                <div className="mx-auto h-12 w-12 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+                  <UserPlus className="h-6 w-6 text-primary" />
+                </div>
                 <h3 className="text-lg font-medium mb-1">No sent requests</h3>
                 <p className="text-sm text-muted-foreground mb-4">You haven't sent any connection requests recently.</p>
                 <Button variant="outline" asChild><Link href="/dashboard/directory">Discover Entrepreneurs</Link></Button>

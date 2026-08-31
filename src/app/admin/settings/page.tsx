@@ -60,21 +60,21 @@ export default function AdminSettingsPage() {
           <nav className="flex flex-col space-y-1">
             <button 
               onClick={() => setActiveTab("general")}
-              className={`flex items-center space-x-3 px-3 py-2 rounded-md font-medium text-sm text-left transition-colors ${activeTab === 'general' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}
+              className={`flex items-center space-x-3 px-3 py-2 rounded-xl font-medium text-sm text-left transition-colors ${activeTab === 'general' ? 'bg-orange-100 text-primary' : 'text-muted-foreground hover:bg-muted'}`}
             >
               <Settings2 className="w-4 h-4" />
               <span>General</span>
             </button>
             <button 
               onClick={() => setActiveTab("security")}
-              className={`flex items-center space-x-3 px-3 py-2 rounded-md font-medium text-sm text-left transition-colors ${activeTab === 'security' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}
+              className={`flex items-center space-x-3 px-3 py-2 rounded-xl font-medium text-sm text-left transition-colors ${activeTab === 'security' ? 'bg-orange-100 text-primary' : 'text-muted-foreground hover:bg-muted'}`}
             >
               <Shield className="w-4 h-4" />
               <span>Security & Access</span>
             </button>
             <button 
               onClick={() => setActiveTab("notifications")}
-              className={`flex items-center space-x-3 px-3 py-2 rounded-md font-medium text-sm text-left transition-colors ${activeTab === 'notifications' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-muted'}`}
+              className={`flex items-center space-x-3 px-3 py-2 rounded-xl font-medium text-sm text-left transition-colors ${activeTab === 'notifications' ? 'bg-orange-100 text-primary' : 'text-muted-foreground hover:bg-muted'}`}
             >
               <Bell className="w-4 h-4" />
               <span>Admin Notifications</span>

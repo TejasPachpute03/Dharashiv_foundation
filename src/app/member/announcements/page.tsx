@@ -119,7 +119,7 @@ export default function AnnouncementsPage() {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Category</label>
                   <select 
-                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm"
+                    className="flex h-10 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary"
                     value={formData.category}
                     onChange={e => setFormData({...formData, category: e.target.value as any})}
                   >
@@ -208,75 +208,86 @@ export default function AnnouncementsPage() {
         </Card>
       )}
 
-      <div className="space-y-4">
+      <Card variant="ivory" className="overflow-hidden">
         {visibleAnnouncements.length === 0 ? (
-          <div className="text-center py-12 border border-dashed rounded-lg bg-card">
-            <Megaphone className="mx-auto h-8 w-8 text-muted-foreground mb-3 opacity-50" />
+          <div className="text-center py-12 bg-card">
+            <div className="mx-auto h-12 w-12 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+              <Megaphone className="h-6 w-6 text-primary" />
+            </div>
             <h3 className="text-lg font-medium mb-1">No announcements yet</h3>
             <p className="text-sm text-muted-foreground">Check back later for updates from the foundation.</p>
           </div>
         ) : (
-          visibleAnnouncements.map(ann => (
-            <Card key={ann.id} className="overflow-hidden hover:shadow-md transition-shadow relative">
+          visibleAnnouncements.map((ann, idx, arr) => (
+            <div 
+              key={ann.id} 
+              className={`p-6 hover:bg-orange-50/30 transition-colors duration-200 relative ${
+                idx < arr.length - 1 ? "border-b border-[#E8E3DD]" : ""
+              } ${
+                ann.category === "Important" || ann.category === "Foundation Update" ? "border-l-4 border-l-primary bg-orange-50/40" : ""
+              }`}
+            >
               {ann.status !== "Published" && (
-                <div className="absolute top-2 right-2 z-10">
+                <div className="absolute top-4 right-4 z-10">
                   <Badge variant={ann.status === "Pending" ? "secondary" : "destructive"}>
                     {ann.status}
                   </Badge>
                 </div>
               )}
               {ann.coverImage && (
-                <div className="w-full h-48 md:h-64 overflow-hidden border-b bg-muted/10">
+                <div className="w-full h-48 md:h-64 overflow-hidden rounded-xl mb-6 bg-muted/10 border">
                   <img src={ann.coverImage} alt={ann.title} className="w-full h-full object-contain" />
                 </div>
               )}
-              <CardContent className="p-0">
-                <div className="flex flex-col md:flex-row">
-                  <div className="bg-muted/30 p-6 md:w-48 flex flex-col justify-center items-center md:border-r border-b md:border-b-0 text-center shrink-0">
-                    <Calendar className="h-6 w-6 text-muted-foreground mb-2" />
-                    <span className="font-semibold">{new Date(ann.publishDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
-                    <span className="text-xs text-muted-foreground">{new Date(ann.publishDate).getFullYear()}</span>
+              <div className="flex flex-col md:flex-row gap-6">
+                <div className="flex-1">
+                  <div className="flex justify-between items-start mb-2.5">
+                    <Badge 
+                      variant={ann.category === "Important" || ann.category === "Foundation Update" ? "default" : "secondary"} 
+                      className="uppercase text-[10px] tracking-wide font-bold"
+                    >
+                      [{ann.category}]
+                    </Badge>
+                    <span className="text-xs text-muted-foreground font-medium">By {ann.author}</span>
                   </div>
-                  <div className="p-6 flex-1">
-                    <div className="flex justify-between items-start mb-2">
-                      <Badge variant="outline" className="mb-2">{ann.category}</Badge>
-                      <span className="text-xs text-muted-foreground">By {ann.author}</span>
-                    </div>
-                    <h3 className="text-xl font-bold mb-3">{ann.title}</h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed whitespace-pre-wrap mb-4">
-                      {ann.description}
-                    </p>
-                    
-                    {ann.attachments && ann.attachments.length > 0 && (
-                      <div className="mt-4 space-y-2 border-t pt-4">
-                        <h4 className="text-sm font-semibold flex items-center text-foreground/80">
-                          <Paperclip className="w-4 h-4 mr-2" /> Attachments
-                        </h4>
-                        <div className="flex flex-wrap gap-2">
-                          {ann.attachments.map((att, idx) => (
-                            <a 
-                              key={idx} 
-                              href={att.url} 
-                              download={att.name}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="flex items-center px-3 py-1.5 border rounded-md text-xs hover:bg-muted/50 transition-colors"
-                            >
-                              <FileText className="w-3.5 h-3.5 mr-1.5 text-muted-foreground" />
-                              <span className="truncate max-w-[150px]">{att.name}</span>
-                              <Download className="w-3 h-3 ml-2 opacity-50" />
-                            </a>
-                          ))}
-                        </div>
+                  <h3 className="text-lg font-bold mb-1.5 text-foreground">{ann.title}</h3>
+                  <p className="text-foreground/80 text-sm leading-relaxed whitespace-pre-wrap mb-3">
+                    {ann.description}
+                  </p>
+                  
+                  {ann.attachments && ann.attachments.length > 0 && (
+                    <div className="mt-4 space-y-2 border-t border-[#E8E3DD] pt-4">
+                      <h4 className="text-sm font-semibold flex items-center text-foreground/80">
+                        <Paperclip className="w-4 h-4 mr-2" /> Attachments
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {ann.attachments.map((att, attIdx) => (
+                          <a 
+                            key={attIdx} 
+                            href={att.url} 
+                            download={att.name}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex items-center px-3 py-1.5 border border-[#E8E3DD] rounded-md text-xs hover:bg-orange-50 transition-colors"
+                          >
+                            <FileText className="w-3.5 h-3.5 mr-1.5 text-muted-foreground" />
+                            <span className="truncate max-w-[150px] font-medium">{att.name}</span>
+                            <Download className="w-3 h-3 ml-2 text-primary/70" />
+                          </a>
+                        ))}
                       </div>
-                    )}
+                    </div>
+                  )}
+                  
+                  <div className="text-xs text-muted-foreground font-medium mt-4">
+                    Posted {new Date(ann.publishDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))
         )}
-      </div>
+      </Card>
     </div>
   );
 }

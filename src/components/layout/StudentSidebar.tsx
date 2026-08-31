@@ -56,14 +56,14 @@ export function StudentSidebar({ isOpen, setIsOpen }: SidebarProps) {
         href={item.href}
         onClick={() => setIsOpen?.(false)}
         className={cn(
-          "flex items-center justify-between px-3 py-2.5 mx-2 rounded-lg transition-colors text-sm font-medium group mb-1",
+          "flex items-center justify-between px-3 py-2.5 mx-3 rounded-md transition-all duration-200 text-sm font-medium group mb-1",
           highlight 
-            ? "bg-primary text-primary-foreground shadow-sm" 
-            : "text-black hover:bg-black/5"
+            ? "bg-primary text-white shadow-md shadow-primary/20" 
+            : "text-white/80 hover:bg-white/10 hover:text-white"
         )}
       >
         <div className="flex items-center space-x-3">
-          <span className={cn(highlight ? "text-primary-foreground" : "text-black/70 group-hover:text-black")}>
+          <span className={cn("transition-colors", highlight ? "text-white" : "text-white/70 group-hover:text-white")}>
             {item.icon}
           </span>
           <span>{item.label}</span>
@@ -83,43 +83,43 @@ export function StudentSidebar({ isOpen, setIsOpen }: SidebarProps) {
       )}
       
       <div className={cn(
-        "h-screen w-64 flex-col fixed inset-y-0 z-50 bg-white/40 backdrop-blur-2xl border-r border-white/40 text-black transition-transform duration-300 md:flex md:translate-x-0 shadow-lg",
+        "h-screen w-64 flex-col fixed inset-y-0 z-50 bg-gradient-to-b from-[#5c1c04] to-[#b53a06] border-r border-[#8a2a06] text-white transition-transform duration-300 md:flex md:translate-x-0 shadow-2xl md:shadow-none",
         isOpen ? "translate-x-0 flex" : "-translate-x-full hidden"
       )}>
-        <Link href="/student" className="p-6 flex items-center space-x-3 mb-2 hover:opacity-80 transition-opacity">
-          <img src="/logo.png" alt="Dharashiv Foundation Logo" className="h-10 w-10 object-contain rounded-full" />
-          <span className="font-bold text-lg tracking-tight">Dharashiv Foundation</span>
+        <Link href="/student" className="p-6 flex flex-col items-center justify-center space-y-3 mb-2 hover:opacity-90 transition-opacity text-center relative z-10">
+          <img src="/logo.png" alt="Dharashiv Foundation Logo" className="h-16 w-16 object-contain rounded-full shadow-lg border-2 border-white/20 bg-white" />
+          <span className="font-bold text-lg tracking-tight text-white leading-tight">Dharashiv<br/>Foundation</span>
         </Link>
 
-      <nav className="flex-1 overflow-y-auto">
+      <nav className="flex-1 overflow-y-auto no-scrollbar relative z-10 mt-2">
         <div className="mb-6">
-          <p className="px-6 text-[10px] font-bold text-black/60 uppercase tracking-wider mb-2">Main</p>
+          <p className="px-6 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-2">Main</p>
           {mainNav.map((item) => <NavItem key={item.href} item={item} />)}
         </div>
 
         <div className="mb-6">
-          <p className="px-6 text-[10px] font-bold text-black/60 uppercase tracking-wider mb-2">Student Portal</p>
+          <p className="px-6 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-2">Student Portal</p>
           {studentNav.map((item) => <NavItem key={item.href} item={item} />)}
         </div>
 
         <div className="mb-6">
-          <p className="px-6 text-[10px] font-bold text-black/60 uppercase tracking-wider mb-2">Account</p>
+          <p className="px-6 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-2">Account</p>
           {accountNav.map((item) => <NavItem key={item.href} item={item} />)}
         </div>
       </nav>
 
-      <div className="p-4 border-t border-black/10">
+      <div className="p-4 border-t border-orange-200/50 mt-auto bg-muted hover:bg-muted-foreground/5 transition-colors">
         <div className="flex items-center justify-between">
           <Link href="/student/profile" className="flex items-center space-x-3 cursor-pointer group flex-1 min-w-0">
-            <ProfileCompletionAvatar profile={currentProfile} size={36} strokeWidth={2.5} />
+            <ProfileCompletionAvatar profile={currentProfile} size={36} strokeWidth={2.5} className="group-hover:ring-2 ring-primary/50 transition-all rounded-full" />
             <div className="flex flex-col min-w-0 pr-2">
-              <span className="text-sm font-semibold truncate group-hover:text-primary text-black transition-colors" title={currentProfile?.name || "Student"}>{currentProfile?.name || "Student"}</span>
-              <span className="text-xs text-black/60 truncate group-hover:text-black/80 transition-colors">Student</span>
+              <span className="text-sm font-semibold truncate group-hover:text-primary-foreground text-white transition-colors" title={currentProfile?.name || "Student"}>{currentProfile?.name || "Student"}</span>
+              <span className="text-xs text-white/60 truncate transition-colors">Student</span>
             </div>
           </Link>
           <button 
             onClick={handleLogout}
-            className="p-2 text-black/60 hover:text-black hover:bg-black/5 rounded transition-colors shrink-0"
+            className="p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors shrink-0"
           >
             <LogOut className="w-4 h-4" />
           </button>

@@ -23,13 +23,15 @@ export default function PendingApprovalsPage() {
   return (
     <div className="space-y-6 animate-in fade-in duration-500 max-w-5xl mx-auto">
       <div>
-        <h2 className="text-2xl font-bold tracking-tight text-secondary">Pending Approvals</h2>
+        <h2 className="text-2xl font-bold tracking-tight text-foreground">Pending Approvals</h2>
         <p className="text-muted-foreground mt-1">Review and approve user-submitted announcements.</p>
       </div>
 
       {pendingAnnouncements.length === 0 ? (
-        <div className="text-center py-16 border border-dashed rounded-lg bg-card">
-          <Check className="mx-auto h-12 w-12 text-success mb-4 opacity-80" />
+        <div className="text-center py-16 border border-dashed border-orange-200/60 rounded-2xl bg-card shadow-sm">
+          <div className="mx-auto h-16 w-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+            <Check className="h-8 w-8 text-success" />
+          </div>
           <h3 className="text-xl font-medium mb-2">All Caught Up!</h3>
           <p className="text-muted-foreground">There are no pending announcements waiting for your approval.</p>
         </div>

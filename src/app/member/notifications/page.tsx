@@ -16,7 +16,7 @@ export default function NotificationsPage() {
       case "connection_accepted": return <Network className="h-5 w-5 text-success" />;
       case "announcement": return <Megaphone className="h-5 w-5 text-primary" />;
       case "event": return <Calendar className="h-5 w-5 text-purple-500" />;
-      case "foundation_update": return <Building className="h-5 w-5 text-blue-600" />;
+      case "foundation_update": return <Building className="h-5 w-5 text-primary" />;
       default: return <Bell className="h-5 w-5 text-muted-foreground" />;
     }
   };

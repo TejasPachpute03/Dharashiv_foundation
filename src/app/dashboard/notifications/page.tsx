@@ -16,7 +16,7 @@ export default function NotificationsPage() {
       case "connection_accepted": return <Network className="h-5 w-5 text-success" />;
       case "announcement": return <Megaphone className="h-5 w-5 text-primary" />;
       case "event": return <Calendar className="h-5 w-5 text-purple-500" />;
-      case "foundation_update": return <Building className="h-5 w-5 text-blue-600" />;
+      case "foundation_update": return <Building className="h-5 w-5 text-primary" />;
       default: return <Bell className="h-5 w-5 text-muted-foreground" />;
     }
   };
@@ -37,8 +37,10 @@ export default function NotificationsPage() {
 
       <div className="space-y-3">
         {notifications.length === 0 ? (
-          <div className="text-center py-12 border border-dashed rounded-lg bg-card">
-            <Bell className="mx-auto h-8 w-8 text-muted-foreground mb-3 opacity-50" />
+          <div className="text-center py-12 border border-dashed border-orange-200/60 rounded-2xl bg-card shadow-sm">
+            <div className="mx-auto h-12 w-12 bg-orange-100 rounded-full flex items-center justify-center mb-4">
+              <Bell className="h-6 w-6 text-primary" />
+            </div>
             <h3 className="text-lg font-medium mb-1">You're all caught up!</h3>
             <p className="text-sm text-muted-foreground">No new notifications at the moment.</p>
           </div>

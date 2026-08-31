@@ -19,7 +19,7 @@ export function Avatar({ className, src, alt, fallback, size = "md", ...props }:
   return (
     <div
       className={cn(
-        "relative flex shrink-0 overflow-hidden rounded-full bg-muted",
+        "relative flex shrink-0 overflow-hidden rounded-full bg-muted text-primary",
         sizeClasses[size],
         className
       )}

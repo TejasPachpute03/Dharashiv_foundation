@@ -41,7 +41,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <EntrepreneurSidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
       )}
       
-      <div className="md:pl-64 flex flex-col flex-1">
+      <div className="md:pl-64 flex flex-col flex-1 dark bg-background text-foreground min-h-screen">
         {isAdmin ? (
           <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b bg-background px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8 justify-between">
             <h1 className="text-xl font-semibold leading-6 text-foreground">Admin Console</h1>

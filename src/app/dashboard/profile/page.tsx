@@ -20,12 +20,12 @@ export default function MyProfilePage() {
   return (
     <div className="max-w-6xl mx-auto animate-in fade-in duration-500 pb-12">
       
-      <Card className="overflow-hidden border-none shadow-sm mb-6 rounded-xl">
+      <Card className="overflow-hidden border-border shadow-sm mb-6 rounded-2xl">
         {/* Banner */}
-        <div className="h-40 bg-secondary w-full relative">
+        <div className="h-40 bg-orange-50 w-full relative">
           {/* Avatar overlap */}
           <div className="absolute -bottom-16 left-8">
-            <div className="bg-background rounded-full inline-flex p-1 shadow-sm">
+            <div className="bg-background rounded-full inline-flex p-1 shadow-sm border border-border">
               <ProfileCompletionAvatar profile={profile} size={140} strokeWidth={6} ringColorClass="text-primary" />
             </div>
           </div>
@@ -104,20 +104,20 @@ export default function MyProfilePage() {
       </Card>
       
       {/* Profile Complete Banner */}
-      <Card className="bg-primary text-primary-foreground border-none shadow-sm mb-6 rounded-xl">
+      <Card className="bg-card text-card-foreground border border-border shadow-sm mb-6 rounded-2xl">
         <CardContent className="p-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex-1 space-y-2 w-full">
               <h3 className="text-xl font-bold">Profile {completion}% Complete</h3>
-              <div className="h-2 w-full bg-primary-foreground/20 rounded-full overflow-hidden">
-                <div className="h-full bg-accent-light rounded-full" style={{ width: `${completion}%` }} />
+              <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                <div className="h-full bg-primary rounded-full transition-all duration-500" style={{ width: `${completion}%` }} />
               </div>
-              <p className="text-sm text-primary-foreground/80">
+              <p className="text-sm text-muted-foreground">
                 Add your exact business needs to reach 100% and improve your matching score.
               </p>
             </div>
             {completion < 100 && (
-              <Button className="shrink-0 bg-accent-light text-accent-foreground hover:bg-accent-light/90" asChild>
+              <Button className="shrink-0" asChild>
                 <Link href="/dashboard/profile/edit">Complete Profile</Link>
               </Button>
             )}
