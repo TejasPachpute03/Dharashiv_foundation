@@ -40,9 +40,7 @@ export function Navbar() {
     >
       <div className="container flex items-center justify-between px-4 md:px-6 lg:px-8 mx-auto">
         <Link href="/" className="flex items-center space-x-3 z-50">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white font-bold text-xl tracking-tighter">
-            DF
-          </div>
+          <img src="/logo.png" alt="Dharashiv Foundation Logo" className="h-10 w-10 object-contain rounded-full shadow-sm bg-white" />
           <span className={cn(
             "font-bold text-lg tracking-tight transition-colors duration-300",
             (isScrolled || mobileMenuOpen) ? "text-foreground" : "text-foreground"
@@ -74,7 +72,7 @@ export function Navbar() {
             <Link href="/login">Login</Link>
           </Button>
           <Button asChild className="bg-primary hover:bg-accent text-white shadow-md hover:shadow-lg transition-all font-medium rounded-full px-6">
-            <Link href="/join">Join Foundation</Link>
+            <Link href="/register">Join Foundation</Link>
           </Button>
         </div>
 
@@ -113,7 +111,7 @@ export function Navbar() {
                 <Link href="/login" onClick={() => setMobileMenuOpen(false)}>Login</Link>
               </Button>
               <Button size="lg" asChild className="w-full justify-center bg-primary hover:bg-accent text-white font-medium h-14">
-                <Link href="/join" onClick={() => setMobileMenuOpen(false)}>Join Foundation</Link>
+                <Link href="/register" onClick={() => setMobileMenuOpen(false)}>Join Foundation</Link>
               </Button>
             </div>
           </motion.div>
