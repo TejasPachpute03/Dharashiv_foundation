@@ -216,8 +216,14 @@ function ConnectionSection() {
   };
 
   return (
-    <section className="py-32 bg-white" ref={ref}>
-      <div className="container px-4 md:px-6 lg:px-8 mx-auto text-center">
+    <section className="relative py-32 bg-slate-50 overflow-hidden" ref={ref}>
+      {/* Attractive Background Elements */}
+      <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-60"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl pointer-events-none translate-y-1/3 -translate-x-1/3"></div>
+      
+      <div className="relative z-10 container px-4 md:px-6 lg:px-8 mx-auto text-center">
         <motion.div initial="hidden" animate={isInView ? "visible" : "hidden"} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.15 } } }}>
           <motion.p variants={fadeInUp} className="text-sm font-bold tracking-widest text-primary uppercase mb-4">What is Dharashiv Foundation?</motion.p>
           <motion.p variants={fadeInUp} className="text-2xl md:text-3xl lg:text-4xl font-medium text-foreground max-w-4xl mx-auto leading-tight mb-24">
