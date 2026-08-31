@@ -17,10 +17,10 @@ const foundationImages = {
   rootsSmall1: "/images/dharashiv-caves.jpg",
   rootsSmall2: "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&q=80&w=800",
   students: "/images/students-walking.jpg",
-  professionals: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=800",
-  entrepreneurs: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&q=80&w=800",
+  professionals: "/images/professionals.jpg",
+  entrepreneurs: "/images/entrepreneurs.jpg",
   businesses: "https://images.unsplash.com/photo-1664575602276-acd073f104c1?auto=format&fit=crop&q=80&w=800",
-  community: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=800"
+  community: "/images/community.jpg"
 };
 
 // Base Animations
