@@ -14,7 +14,7 @@ import { motion, Variants, useScroll, useTransform, useReducedMotion, useInView 
 const foundationImages = {
   heroLandscape: "/images/dharashiv-night.png",
   rootsLarge: "/images/tuljabhavani-gate.jpg",
-  rootsSmall1: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&q=80&w=800",
+  rootsSmall1: "/images/dharashiv-caves.jpg",
   rootsSmall2: "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&q=80&w=800",
   students: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800",
   professionals: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=800",
