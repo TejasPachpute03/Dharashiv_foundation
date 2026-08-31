@@ -62,7 +62,7 @@ function HeroSection() {
   const imageY = useTransform(scrollYProgress, [0, 1], ["0%", shouldDisableParallax ? "0%" : "15%"]);
 
   return (
-    <section ref={ref} className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-white">
+    <section ref={ref} className="relative pt-28 pb-12 lg:pt-36 lg:pb-16 overflow-hidden bg-white">
       <div className="container px-4 md:px-6 lg:px-8 mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
@@ -152,11 +152,11 @@ function RootsSection() {
   const y3 = useTransform(scrollYProgress, [0, 1], ["0px", shouldDisableParallax ? "0px" : "-15px"]);
 
   return (
-    <section ref={ref} className="py-24 bg-muted overflow-hidden">
+    <section ref={ref} className="py-16 bg-muted overflow-hidden">
       <div className="container px-4 md:px-6 lg:px-8 mx-auto">
         <motion.div 
           initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
         >
           <div className="max-w-xl">
             <motion.p variants={fadeInUp} className="text-sm font-bold tracking-widest text-primary uppercase mb-4">Our Roots Connect Us</motion.p>
@@ -216,7 +216,7 @@ function ConnectionSection() {
   };
 
   return (
-    <section className="relative py-32 bg-slate-50 overflow-hidden" ref={ref}>
+    <section className="relative py-16 bg-slate-50 overflow-hidden" ref={ref}>
       {/* Background Image */}
       <div 
         className="absolute inset-0 z-0 opacity-15"
@@ -237,7 +237,7 @@ function ConnectionSection() {
       <div className="relative z-10 container px-4 md:px-6 lg:px-8 mx-auto text-center">
         <motion.div initial="hidden" animate={isInView ? "visible" : "hidden"} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.15 } } }}>
           <motion.p variants={fadeInUp} className="text-sm font-bold tracking-widest text-primary uppercase mb-4">What is Dharashiv Foundation?</motion.p>
-          <motion.p variants={fadeInUp} className="text-2xl md:text-3xl lg:text-4xl font-medium text-foreground max-w-4xl mx-auto leading-tight mb-24">
+          <motion.p variants={fadeInUp} className="text-2xl md:text-3xl lg:text-4xl font-medium text-foreground max-w-4xl mx-auto leading-tight mb-12">
             Dharashiv Foundation is a community platform created to bring together people connected to Dharashiv — regardless of their profession, age, background or current location.
           </motion.p>
 
@@ -308,9 +308,9 @@ export default function LandingPage() {
         <ConnectionSection />
 
         {/* 4. WHY ARE WE BUILDING IT? */}
-        <section className="py-32 bg-muted">
+        <section className="py-16 bg-muted">
           <div className="container px-4 md:px-6 lg:px-8 mx-auto">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer} className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer} className="flex flex-col lg:flex-row gap-12 lg:gap-16">
               <div className="lg:w-1/3">
                 <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold tracking-tight mb-6 text-foreground">
                   Why are we building it?
@@ -339,10 +339,10 @@ export default function LandingPage() {
         </section>
 
         {/* 5. COMMUNITY SECTION */}
-        <section id="community" className="py-32 bg-white">
+        <section id="community" className="py-16 bg-white">
           <div className="container px-4 md:px-6 lg:px-8 mx-auto">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.08 } } }}>
-              <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold tracking-tight mb-16 text-center max-w-3xl mx-auto text-foreground">
+              <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl font-bold tracking-tight mb-12 text-center max-w-3xl mx-auto text-foreground">
                 A community for everyone connected to Dharashiv.
               </motion.h2>
               
@@ -372,7 +372,7 @@ export default function LandingPage() {
         </section>
 
         {/* 6. ENTREPRENEUR NETWORK PREVIEW */}
-        <section id="entrepreneurs" className="relative py-32 bg-slate-50 overflow-hidden">
+        <section id="entrepreneurs" className="relative py-16 bg-slate-50 overflow-hidden">
           {/* Village Background Image */}
           <div 
             className="absolute inset-0 z-0 opacity-[0.07]"
@@ -444,10 +444,10 @@ export default function LandingPage() {
         </section>
 
         {/* 7. OPPORTUNITY SECTION */}
-        <section className="py-32 bg-white">
+        <section className="py-16 bg-white">
           <div className="container px-4 md:px-6 lg:px-8 mx-auto text-center">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
-              <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-16 text-foreground max-w-4xl mx-auto leading-tight">
+              <motion.h2 variants={fadeInUp} className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-12 text-foreground max-w-4xl mx-auto leading-tight">
                 One connection can lead to <span className="text-primary">many possibilities.</span>
               </motion.h2>
               
@@ -497,7 +497,7 @@ export default function LandingPage() {
         </section>
 
         {/* 9. FINAL CTA */}
-        <section className="py-32 lg:py-48 bg-primary text-white text-center relative overflow-hidden">
+        <section className="py-16 lg:py-24 bg-primary text-white text-center relative overflow-hidden">
           <motion.div 
             animate={prefersReducedMotion ? {} : { opacity: [0.05, 0.1, 0.05] }} 
             transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }} 
