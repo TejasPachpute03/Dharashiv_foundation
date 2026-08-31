@@ -528,7 +528,7 @@ export default function LandingPage() {
                 <Button size="lg" className="w-full sm:w-auto bg-white text-primary hover:bg-muted text-lg font-bold px-10 h-16 rounded-full shadow-xl" asChild>
                   <Link href="/register">Register</Link>
                 </Button>
-                <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent border-2 border-white text-white hover:bg-white/10 text-lg font-bold px-10 h-16 rounded-full" asChild>
+                <Button size="lg" className="w-full sm:w-auto bg-black text-white hover:bg-gray-900 border-2 border-black text-lg font-bold px-10 h-16 rounded-full shadow-xl" asChild>
                   <Link href="/login">Login</Link>
                 </Button>
               </motion.div>
