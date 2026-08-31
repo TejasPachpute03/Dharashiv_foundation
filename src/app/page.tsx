@@ -525,10 +525,10 @@ export default function LandingPage() {
                 No matter where life takes you, your connection with Dharashiv can bring you closer to people, ideas and opportunities that matter.
               </motion.p>
               <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                <Button size="lg" className="w-full sm:w-auto bg-white text-primary hover:bg-muted text-lg font-bold px-10 h-16 rounded-full shadow-xl" asChild>
+                <Button size="lg" className="w-full sm:w-auto sm:min-w-[200px] bg-white text-primary hover:bg-muted text-lg font-bold px-10 h-16 rounded-full shadow-xl" asChild>
                   <Link href="/register">Register</Link>
                 </Button>
-                <Button size="lg" className="w-full sm:w-auto bg-black text-white hover:bg-gray-900 border-2 border-black text-lg font-bold px-10 h-16 rounded-full shadow-xl" asChild>
+                <Button size="lg" className="w-full sm:w-auto sm:min-w-[200px] bg-black text-white hover:bg-gray-900 text-lg font-bold px-10 h-16 rounded-full shadow-2xl" asChild>
                   <Link href="/login">Login</Link>
                 </Button>
               </motion.div>
