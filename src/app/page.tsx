@@ -501,6 +501,50 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* 8.5 STUDENT IDEA SUBMISSION */}
+        <section className="relative py-24 overflow-hidden">
+          {/* Background Image with Overlay */}
+          <div className="absolute inset-0 z-0">
+            <Image 
+              src="/images/dharashiv-village-bg.jpg" 
+              alt="Dharashiv Village Background" 
+              fill 
+              quality={90}
+              className="object-cover object-center" 
+            />
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
+          </div>
+          
+          <div className="container relative z-10 px-4 md:px-6 lg:px-8 mx-auto">
+            <motion.div 
+              initial="hidden" 
+              whileInView="visible" 
+              viewport={{ once: true, margin: "-100px" }} 
+              variants={staggerContainer}
+              className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8 md:p-12 lg:p-16 max-w-5xl mx-auto text-center shadow-2xl relative overflow-hidden"
+            >
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+
+              <motion.div variants={fadeInUp} className="relative z-10">
+                <div className="inline-block px-4 py-1.5 rounded-full bg-white/20 text-white text-sm font-bold uppercase tracking-wider mb-6 border border-white/30 backdrop-blur-sm shadow-sm">
+                  Student Initiative
+                </div>
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-white drop-shadow-md">
+                  For Students of Dharashiv
+                </h2>
+                <p className="text-xl md:text-2xl text-white/95 mb-10 max-w-3xl mx-auto leading-relaxed font-medium drop-shadow-sm">
+                  Have a business idea, startup idea, social initiative or innovative project? Share it with the Dharashiv Foundation.
+                </p>
+                <Button size="lg" className="bg-primary text-white hover:bg-primary/90 text-lg font-bold px-10 h-16 rounded-full shadow-[0_0_30px_rgba(249,115,22,0.3)] transition-transform hover:scale-105 border border-primary/50" asChild>
+                  <Link href="/login">Submit Your Idea</Link>
+                </Button>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
         {/* 9. FINAL CTA */}
         <section className="py-16 lg:py-24 bg-primary text-white text-center relative overflow-hidden">
           <motion.div 
