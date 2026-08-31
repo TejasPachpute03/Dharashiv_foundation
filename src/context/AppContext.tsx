@@ -96,7 +96,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
     const storedVersion = localStorage.getItem("df_mock_version");
     if (storedVersion !== "4") {
-      localStorage.removeItem("df_entrepreneurs");
+      // No longer wiping entrepreneurs to preserve user data
       localStorage.setItem("df_mock_version", "4");
     }
 
@@ -116,14 +116,30 @@ export function AppProvider({ children }: { children: ReactNode }) {
         return e;
       });
       
-      if (migrated.length < mockEntrepreneurs.length) {
-        setEntrepreneurs(mockEntrepreneurs.map(e => ({
-          ...e,
-          role: e.role || (e.membershipType === "Business / Member" ? "business" : e.membershipType === "Student" ? "student" : e.membershipType === "General Member" ? "other" : e.membershipType === "Core Member / Admin" ? "admin" : "other")
-        })));
-      } else {
-        setEntrepreneurs(migrated);
-      }
+      // Merge mock and stored data to ensure we have all base profiles (like Pradip and Nilesh)
+      // while preserving any user-created accounts or profile edits.
+      const mockMapped = mockEntrepreneurs.map(e => ({
+        ...e,
+        role: e.role || (e.membershipType === "Business / Member" ? "business" : e.membershipType === "Student" ? "student" : e.membershipType === "General Member" ? "other" : e.membershipType === "Core Member / Admin" ? "admin" : "other")
+      }));
+      
+      const merged = [...mockMapped];
+      
+      migrated.forEach((user: Entrepreneur) => {
+        // Ensure user has a role to satisfy TS
+        const userWithRole = {
+          ...user,
+          role: user.role || (user.membershipType === "Business / Member" ? "business" : user.membershipType === "Student" ? "student" : user.membershipType === "General Member" ? "other" : user.membershipType === "Core Member / Admin" ? "admin" : "other")
+        };
+        const index = merged.findIndex(m => m.id === user.id);
+        if (index !== -1) {
+          merged[index] = userWithRole; // Override mock with stored changes
+        } else {
+          merged.push(userWithRole); // Add new user-created ones
+        }
+      });
+      
+      setEntrepreneurs(merged);
     }
     else {
       setEntrepreneurs(mockEntrepreneurs.map(e => ({
