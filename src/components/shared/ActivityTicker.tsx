@@ -41,7 +41,7 @@ export function ActivityTicker() {
       {/* Static Flashing Header */}
       <div className="bg-white/80 z-10 px-4 h-full flex items-center border-r border-black/10 font-bold whitespace-nowrap shadow-[4px_0_15px_rgba(0,0,0,0.05)]">
         <Zap className="w-4 h-4 mr-2 animate-pulse text-accent" />
-        <span className="animate-flash-red-black tracking-wider uppercase text-sm">Live Updates</span>
+        <span className="animate-flash-red-black tracking-wider uppercase text-sm">Updates</span>
       </div>
 
       {/* Scrolling Ticker */}
