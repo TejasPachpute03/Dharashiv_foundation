@@ -345,7 +345,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
 
     if (searchTerm === "business@demo.com") {
-      setCurrentUser({ id: "b1", email: "business@demo.com", role: "business" });
+      setCurrentUser({ id: "m-pradip", email: "pradip.jadhav@example.com", role: "business" });
       return { success: true, role: "business" };
     }
     
