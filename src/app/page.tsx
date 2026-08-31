@@ -293,7 +293,7 @@ export default function LandingPage() {
   const featuredEntrepreneurs = [
     mockEntrepreneurs.find(e => e.id === "e1") || mockEntrepreneurs[0],
     mockEntrepreneurs.find(e => e.id === "e21") || mockEntrepreneurs[1],
-    mockEntrepreneurs.find(e => e.id === "e2") || mockEntrepreneurs[2],
+    mockEntrepreneurs.find(e => e.id === "e3") || mockEntrepreneurs[2],
     mockEntrepreneurs.find(e => e.id === "m1") || mockEntrepreneurs[3],
   ].map(e => {
     if (e.profileImage && e.profileImage.includes('ui-avatars.com')) {
