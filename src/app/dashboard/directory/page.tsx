@@ -30,7 +30,7 @@ function DirectoryContent() {
     }
   }, [searchParams]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [selectedLocation, setSelectedLocation] = useState<string>("Dharashiv");
+  const [selectedLocation, setSelectedLocation] = useState<string>("");
   const [selectedTaluka, setSelectedTaluka] = useState<string>("");
   const [selectedLookingFor, setSelectedLookingFor] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("recommended");
