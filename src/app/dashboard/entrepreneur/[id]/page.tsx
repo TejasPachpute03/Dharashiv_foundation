@@ -219,7 +219,7 @@ export default function EntrepreneurProfilePage({ params }: { params: Promise<{ 
             <CardContent className="p-6">
               <h3 className="font-semibold text-lg text-accent-light mb-4">Looking For</h3>
               <div className="flex flex-wrap gap-2 mb-6">
-                {profile.lookingFor.map((item, i) => (
+                {(profile.lookingFor || []).map((item, i) => (
                   <Badge key={i} variant="outline" className="bg-background border-accent/30 text-foreground py-1 px-3 text-sm font-medium">
                     {item}
                   </Badge>
@@ -240,7 +240,7 @@ export default function EntrepreneurProfilePage({ params }: { params: Promise<{ 
             <CardContent className="p-6">
               <h3 className="font-semibold mb-4 text-lg">Products & Services</h3>
               <div className="flex flex-wrap gap-2">
-                {profile.services.map((service, i) => (
+                {(profile.services || []).map((service, i) => (
                   <Badge key={i} variant="secondary" className="px-3 py-1 text-sm font-medium">{service}</Badge>
                 ))}
               </div>
@@ -252,7 +252,7 @@ export default function EntrepreneurProfilePage({ params }: { params: Promise<{ 
               <CardContent className="p-6">
                 <h3 className="font-semibold mb-4 text-lg">Target Customers</h3>
                 <ul className="space-y-2">
-                  {profile.targetCustomers.map((cust, i) => (
+                  {(profile.targetCustomers || []).map((cust, i) => (
                     <li key={i} className="flex items-center text-sm text-muted-foreground">
                       <span className="w-1.5 h-1.5 rounded-full bg-primary mr-2"></span>
                       {cust}
@@ -266,7 +266,7 @@ export default function EntrepreneurProfilePage({ params }: { params: Promise<{ 
               <CardContent className="p-6">
                 <h3 className="font-semibold mb-4 text-lg">Industries Served</h3>
                 <ul className="space-y-2">
-                  {profile.industriesServed.map((ind, i) => (
+                  {(profile.industriesServed || []).map((ind, i) => (
                     <li key={i} className="flex items-center text-sm text-muted-foreground">
                       <span className="w-1.5 h-1.5 rounded-full bg-primary mr-2"></span>
                       {ind}

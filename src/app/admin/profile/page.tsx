@@ -85,7 +85,7 @@ export default function AdminProfilePage() {
                 </div>
                 <div>
                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Member ID</p>
-                  <p className="font-medium">DF-{profile.id.replace(/\D/g, '').padStart(4, '0')}</p>
+                  <p className="font-medium">DF-{String(profile.id).replace(/\D/g, '').padStart(4, '0')}</p>
                 </div>
               </div>
 
@@ -156,7 +156,7 @@ export default function AdminProfilePage() {
           <CardContent className="p-6">
             <h3 className="font-semibold text-lg text-primary mb-4">Looking For</h3>
             <div className="flex flex-wrap gap-2 mb-6">
-              {profile.lookingFor.map((item, i) => (
+              {(profile.lookingFor || []).map((item, i) => (
                 <Badge key={i} variant="outline" className="bg-background border-primary/20 text-foreground py-1 px-3 text-xs font-medium">
                   {item}
                 </Badge>
