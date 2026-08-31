@@ -15,7 +15,7 @@ export interface SystemSettings {
 
 interface AppContextType {
   currentUser: User | null;
-  login: (email: string, password?: string) => { success: boolean; error?: string };
+  login: (email: string, password?: string) => { success: boolean; error?: string; role?: string };
   register: (data: Partial<Entrepreneur>) => { success: boolean; error?: string };
   logout: () => void;
   
@@ -65,8 +65,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [entrepreneurs, setEntrepreneurs] = useState<Entrepreneur[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
-  const [events, setEvents] = useState<Event[]>([]);
+  const [announcements, setAnnouncements] = useState<Announcement[]>(mockAnnouncements);
+  const [events, setEvents] = useState<Event[]>(mockEvents);
   const [jobs, setJobs] = useState<Job[]>([]);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [connections, setConnections] = useState<Connection[]>([]);
@@ -307,8 +307,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     );
     
     if (foundUser) {
-      setCurrentUser({ id: foundUser.id, email: foundUser.email, role: foundUser.role || "other" });
-      return { success: true };
+      const user = { id: foundUser.id, email: foundUser.email, role: foundUser.role || "other" };
+      setCurrentUser(user);
+      return { success: true, role: user.role };
     }
     
     // Fallback for hardcoded demo accounts if not found in array

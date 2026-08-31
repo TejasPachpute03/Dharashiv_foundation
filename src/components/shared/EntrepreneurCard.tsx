@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Entrepreneur } from "@/types";
 import { Avatar } from "@/components/ui/Avatar";
 import { useAppContext } from "@/context/AppContext";
+import { getProfileRoute } from "@/lib/route-utils";
 
 const headerVariants = [
   "linear-gradient(135deg, #FFFDFC 0%, #FFF7EF 45%, #F8F1E8 100%)",
@@ -198,7 +199,7 @@ export function EntrepreneurCard({ entrepreneur, matchPercentage }: { entreprene
 
       <CardFooter className="px-5 sm:px-6 pb-5 sm:pb-6 pt-5 border-t border-[#EAE4DC] flex gap-3 bg-transparent mt-auto">
         <Link 
-          href={`${basePath}/entrepreneur/${entrepreneur.id}`}
+          href={getProfileRoute(entrepreneur.id, currentUser?.role)}
           className={buttonVariants({ variant: "outline", className: "h-[42px] sm:h-[44px] rounded-[10px] sm:rounded-[12px] w-full flex-1 bg-transparent border-primary/40 text-primary hover:border-primary hover:bg-[#FFFDFC] transition-all duration-200 hover:-translate-y-px" })}
         >
           View Profile

@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
+import { getProfileRoute } from "@/lib/route-utils";
 
 export default function MyNetworkPage() {
   return (
@@ -98,7 +99,7 @@ function NetworkContent() {
                       <div className="p-4 flex items-start space-x-4">
                         <Avatar src={ent.profileImage} fallback={ent.name.charAt(0)} size="lg" />
                         <div className="flex-1 min-w-0">
-                          <Link href={`/dashboard/entrepreneur/${ent.id}`} className="font-semibold text-foreground hover:underline truncate block">
+                          <Link href={getProfileRoute(ent.id, currentUser?.role)} className="font-semibold text-foreground hover:underline truncate block">
                             {ent.name}
                           </Link>
                           <p className="text-sm text-muted-foreground truncate">{ent.designation}</p>
@@ -107,7 +108,7 @@ function NetworkContent() {
                       </div>
                       <div className="bg-muted/30 border-t p-3 flex justify-end gap-2">
                         <Button variant="outline" size="sm" asChild>
-                          <Link href={`/dashboard/entrepreneur/${ent.id}`}>View Profile</Link>
+                          <Link href={getProfileRoute(ent.id, currentUser?.role)}>View Profile</Link>
                         </Button>
                         <Button size="sm" onClick={() => openChat(ent.id)}>Message</Button>
                       </div>
@@ -138,7 +139,7 @@ function NetworkContent() {
                     <CardContent className="p-4 flex flex-col sm:flex-row items-center gap-4">
                       <Avatar src={ent.profileImage} fallback={ent.name.charAt(0)} size="lg" />
                       <div className="flex-1 text-center sm:text-left">
-                        <Link href={`/dashboard/entrepreneur/${ent.id}`} className="font-semibold text-foreground hover:underline">
+                        <Link href={getProfileRoute(ent.id, currentUser?.role)} className="font-semibold text-foreground hover:underline">
                           {ent.name}
                         </Link>
                         <p className="text-sm text-muted-foreground">{ent.designation} at {ent.companyName}</p>
@@ -176,7 +177,7 @@ function NetworkContent() {
                     <CardContent className="p-4 flex flex-col sm:flex-row items-center gap-4">
                       <Avatar src={ent.profileImage} fallback={ent.name.charAt(0)} size="lg" />
                       <div className="flex-1 text-center sm:text-left">
-                        <Link href={`/dashboard/entrepreneur/${ent.id}`} className="font-semibold text-foreground hover:underline">
+                        <Link href={getProfileRoute(ent.id, currentUser?.role)} className="font-semibold text-foreground hover:underline">
                           {ent.name}
                         </Link>
                         <p className="text-sm text-muted-foreground">{ent.designation} at {ent.companyName}</p>

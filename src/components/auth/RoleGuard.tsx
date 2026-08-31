@@ -24,20 +24,13 @@ export function RoleGuard({ children, allowedRoles }: RoleGuardProps) {
       return;
     }
 
-    // Check if user role is in the allowed roles
-    if (allowedRoles.includes(currentUser.role)) {
+    const expectedDashboard = getDashboardForRole(currentUser.role);
+    const currentBase = "/" + pathname.split('/')[1];
+
+    if (currentBase === expectedDashboard || (allowedRoles && allowedRoles.includes(currentUser.role))) {
       setIsAuthorized(true);
     } else {
-      // If unauthorized, redirect them to their actual dashboard
-      const correctDashboard = getDashboardForRole(currentUser.role);
-      
-      // Prevent infinite redirect loop if somehow the mapping is wrong
-      if (pathname !== correctDashboard) {
-        router.push(correctDashboard);
-      } else {
-        // Fallback to home if they are stuck
-        router.push("/");
-      }
+      router.push(expectedDashboard);
     }
   }, [currentUser, allowedRoles, router, pathname]);
 

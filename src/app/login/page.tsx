@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Mail, Lock, ArrowRight, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
@@ -28,19 +28,8 @@ export default function LoginPage() {
 
     const result = login(email, password);
     
-    if (result.success) {
-      // The context will update currentUser synchronously in this mock setup.
-      // But we can also rely on RoleGuard later, or force it here if we had access to the new user.
-      // To ensure we get the right role, we can just let context update and redirect.
-      // Wait, since login updates context synchronously, let's just push to /dashboard or /student etc.
-      // Actually, since login() doesn't return the user object directly, we can just push to `/` and let RoleGuard handle it,
-      // OR we can push to a loading state. Let's get the user from localStorage or just push to `/` and let layout handle it.
-      // Actually, since context updates immediately, we might not have `currentUser` in this closure immediately.
-      // Let's do a trick: we know the destination from `getDashboardForRole(login_result_role)`.
-      // The easiest way is to let `useEffect` handle it, but Next.js router.push is fine. 
-      // I'll push to `/dashboard` and RoleGuard will redirect if wrong, OR I can just push to `/` and a global guard handles it.
-      // Wait, there's no global guard on `/`. Let's just push them to `/dashboard`, the RoleGuard on `/dashboard` will redirect them to their actual dashboard!
-      router.push("/dashboard");
+    if (result.success && result.role) {
+      router.push(getDashboardForRole(result.role));
     } else {
       setError(result.error || "Login failed");
       setIsLoading(false);

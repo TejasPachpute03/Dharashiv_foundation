@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { MemberFormModal } from "@/components/admin/MemberFormModal";
 import { Entrepreneur } from "@/types";
+import { getProfileRoute } from "@/lib/route-utils";
 
 export default function AdminMembersPage() {
   return (
@@ -20,7 +21,7 @@ export default function AdminMembersPage() {
 }
 
 function AdminMembersContent() {
-  const { entrepreneurs, updateEntrepreneurStatus, addEntrepreneur, updateEntrepreneur } = useAppContext();
+  const { entrepreneurs, updateEntrepreneurStatus, addEntrepreneur, updateEntrepreneur, currentUser } = useAppContext();
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -290,7 +291,7 @@ function AdminMembersContent() {
                 <tr 
                   key={member.id} 
                   className="border-b border-muted last:border-0 hover:bg-muted/10 transition-colors bg-card cursor-pointer"
-                  onClick={() => router.push(`/dashboard/entrepreneur/${member.id}`)}
+                  onClick={() => router.push(getProfileRoute(member.id, currentUser?.role))}
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">

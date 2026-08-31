@@ -6,10 +6,11 @@ import { useAppContext } from "@/context/AppContext";
 import { Input } from "@/components/ui/Input";
 import { Badge } from "@/components/ui/Badge";
 import { Avatar } from "@/components/ui/Avatar";
+import { getProfileRoute } from "@/lib/route-utils";
 import Link from "next/link";
 
 export default function GlobalConnectionsPage() {
-  const { connections, entrepreneurs } = useAppContext();
+  const { connections, entrepreneurs, currentUser } = useAppContext();
   const [searchQuery, setSearchQuery] = useState("");
 
   const getEntrepreneur = (id: string) => entrepreneurs.find(e => e.id === id);
@@ -79,7 +80,7 @@ export default function GlobalConnectionsPage() {
                       <div className="flex items-center gap-3">
                         <Avatar src={requester.profileImage} fallback={requester.name.charAt(0)} size="sm" />
                         <div>
-                          <Link href={`/dashboard/entrepreneur/${requester.id}`} className="font-semibold text-foreground text-sm hover:underline">
+                          <Link href={getProfileRoute(requester.id, currentUser?.role)} className="font-semibold text-foreground text-sm hover:underline">
                             {requester.name}
                           </Link>
                           <div className="text-muted-foreground text-xs truncate max-w-[150px]">{requester.companyName}</div>
@@ -90,7 +91,7 @@ export default function GlobalConnectionsPage() {
                       <div className="flex items-center gap-3">
                         <Avatar src={recipient.profileImage} fallback={recipient.name.charAt(0)} size="sm" />
                         <div>
-                          <Link href={`/dashboard/entrepreneur/${recipient.id}`} className="font-semibold text-foreground text-sm hover:underline">
+                          <Link href={getProfileRoute(recipient.id, currentUser?.role)} className="font-semibold text-foreground text-sm hover:underline">
                             {recipient.name}
                           </Link>
                           <div className="text-muted-foreground text-xs truncate max-w-[150px]">{recipient.companyName}</div>
