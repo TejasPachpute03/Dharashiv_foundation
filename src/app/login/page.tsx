@@ -29,7 +29,14 @@ export default function LoginPage() {
     const result = login(email, password);
     
     if (result.success && result.role) {
-      router.push(getDashboardForRole(result.role));
+      const searchParams = new URLSearchParams(window.location.search);
+      const redirectUrl = searchParams.get('redirect');
+      
+      if (redirectUrl) {
+        router.push(redirectUrl);
+      } else {
+        router.push(getDashboardForRole(result.role));
+      }
     } else {
       setError(result.error || "Login failed");
       setIsLoading(false);

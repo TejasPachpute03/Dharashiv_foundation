@@ -506,7 +506,7 @@ export default function LandingPage() {
           {/* Background Image with Overlay */}
           <div className="absolute inset-0 z-0">
             <Image 
-              src="/images/dharashiv-village-bg.jpg" 
+              src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&q=80&w=2000" 
               alt="Dharashiv Village Background" 
               fill 
               quality={90}
@@ -538,7 +538,7 @@ export default function LandingPage() {
                   Have a business idea, startup idea, social initiative or innovative project? Share it with the Dharashiv Foundation.
                 </p>
                 <Button size="lg" className="bg-primary text-white hover:bg-primary/90 text-lg font-bold px-10 h-16 rounded-full shadow-[0_0_30px_rgba(249,115,22,0.3)] transition-transform hover:scale-105 border border-primary/50" asChild>
-                  <Link href="/login">Submit Your Idea</Link>
+                  <Link href="/login?redirect=/student/idea-submission">Submit Your Idea</Link>
                 </Button>
               </motion.div>
             </motion.div>
