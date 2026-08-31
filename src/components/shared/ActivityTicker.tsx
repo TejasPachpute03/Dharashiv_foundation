@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppContext } from "@/context/AppContext";
-import { Zap, Briefcase, Users, Calendar, Target } from "lucide-react";
+import { Star, Briefcase, Users, Calendar, Target } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function ActivityTicker() {
@@ -40,7 +40,7 @@ export function ActivityTicker() {
     <div className="w-full bg-white/60 backdrop-blur-md border border-black/10 rounded-xl overflow-hidden shadow-sm flex items-center h-12 relative my-6">
       {/* Static Flashing Header */}
       <div className="bg-white/80 z-10 px-4 h-full flex items-center border-r border-black/10 font-bold whitespace-nowrap shadow-[4px_0_15px_rgba(0,0,0,0.05)]">
-        <Zap className="w-4 h-4 mr-2 animate-pulse text-accent" />
+        <Star className="w-4 h-4 mr-2 animate-pulse text-yellow-500 fill-yellow-400 drop-shadow-[0_0_8px_rgba(234,179,8,0.9)]" />
         <span className="animate-flash-red-black tracking-wider uppercase text-sm">Updates</span>
       </div>
 
