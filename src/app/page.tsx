@@ -372,8 +372,23 @@ export default function LandingPage() {
         </section>
 
         {/* 6. ENTREPRENEUR NETWORK PREVIEW */}
-        <section id="entrepreneurs" className="py-32 bg-muted">
-          <div className="container px-4 md:px-6 lg:px-8 mx-auto">
+        <section id="entrepreneurs" className="relative py-32 bg-slate-50 overflow-hidden">
+          {/* Village Background Image */}
+          <div 
+            className="absolute inset-0 z-0 opacity-[0.07]"
+            style={{
+              backgroundImage: "url('https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&q=80&w=2000')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundAttachment: "fixed"
+            }}
+          ></div>
+          
+          {/* Subtle Gradient Overlay */}
+          <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-white to-transparent z-0"></div>
+          <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-white to-transparent z-0"></div>
+
+          <div className="relative z-10 container px-4 md:px-6 lg:px-8 mx-auto">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1 } } }}>
               <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-6">
                 <motion.div variants={fadeInUp} className="max-w-2xl">
@@ -381,40 +396,44 @@ export default function LandingPage() {
                   <p className="text-xl text-muted-foreground font-medium">Discover entrepreneurs, professionals and businesses connected to Dharashiv.</p>
                 </motion.div>
                 <motion.div variants={fadeInUp}>
-                  <Button size="lg" className="bg-white text-foreground border border-border hover:border-primary hover:text-primary transition-all rounded-full px-8 h-14" asChild>
+                  <Button size="lg" className="bg-white text-foreground border border-border hover:border-primary hover:text-primary transition-all rounded-full px-8 h-14 shadow-sm" asChild>
                     <Link href="/login">Explore the Community</Link>
                   </Button>
                 </motion.div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
                 {featuredEntrepreneurs.map((ent, idx) => (
-                  <motion.div key={ent.id} variants={fadeInUp} className="bg-white rounded-3xl overflow-hidden border border-border hover:shadow-xl hover:border-primary/30 transition-all duration-300 group">
-                    <div className="p-8">
+                  <motion.div key={ent.id} variants={fadeInUp} className="bg-white/90 backdrop-blur-sm rounded-3xl overflow-hidden border border-border hover:shadow-xl hover:border-primary/40 transition-all duration-300 group flex flex-col relative z-20">
+                    <div className="p-7 flex flex-col h-full">
                       <div className="flex items-center space-x-4 mb-6">
-                        <div className="relative h-16 w-16">
+                        <div className="relative h-16 w-16 flex-shrink-0">
                           {ent.profileImage ? (
-                            <Image src={ent.profileImage} alt={ent.name} fill sizes="64px" className="rounded-full object-cover border-2 border-muted" />
+                            <Image src={ent.profileImage} alt={ent.name} fill sizes="64px" className="rounded-full object-cover border-2 border-muted shadow-sm" />
                           ) : (
-                            <div className="w-full h-full rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl border-2 border-muted">
+                            <div className="w-full h-full rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl border-2 border-primary/20 shadow-inner">
                               {ent.name.charAt(0)}
                             </div>
                           )}
                         </div>
-                        <div>
-                          <h3 className="font-bold text-foreground text-lg group-hover:text-primary transition-colors">{ent.name}</h3>
-                          <p className="text-sm text-muted-foreground font-medium">{ent.designation}</p>
+                        <div className="overflow-hidden">
+                          <h3 className="font-bold text-foreground text-lg group-hover:text-primary transition-colors line-clamp-1">{ent.name}</h3>
+                          <p className="text-sm text-muted-foreground font-medium line-clamp-1">{ent.designation}</p>
                         </div>
                       </div>
+                      
                       <div className="mb-6 space-y-1">
-                        <p className="font-bold text-foreground">{ent.companyName}</p>
-                        <p className="text-sm text-primary font-medium">{ent.category}</p>
+                        <p className="font-bold text-foreground line-clamp-2 min-h-[3rem] leading-snug">{ent.companyName}</p>
+                        <p className="text-sm text-primary font-medium line-clamp-1">{ent.category}</p>
                       </div>
-                      <div className="mb-6 text-sm text-muted-foreground space-y-3">
-                        <p className="flex items-center font-medium"><MapPin className="w-4 h-4 mr-2 text-foreground/40" /> <span>{ent.location ? ent.location.split(',')[0] : "Dharashiv"}</span></p>
-                        <p className="bg-muted p-3 rounded-xl line-clamp-2 text-xs">
-                          {ent.description || ent.businessNeeds || `Passionate ${ent.designation || 'member'} contributing to the Dharashiv Foundation community.`}
-                        </p>
+                      
+                      <div className="mt-auto text-sm text-muted-foreground space-y-3">
+                        <p className="flex items-center font-medium"><MapPin className="w-4 h-4 mr-2 text-foreground/40 flex-shrink-0" /> <span className="line-clamp-1">{ent.location ? ent.location.split(',')[0] : "Dharashiv"}</span></p>
+                        <div className="bg-slate-50/80 p-4 rounded-xl border border-slate-100">
+                          <p className="text-xs leading-relaxed text-slate-600 line-clamp-3">
+                            {ent.description || ent.businessNeeds || `Passionate ${ent.designation || 'member'} contributing to the Dharashiv Foundation community.`}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
