@@ -350,7 +350,7 @@ export default function LandingPage() {
                   { img: foundationImages.community, title: "Community", desc: "Stay connected and contribute to Dharashiv." }
                 ].map((item, idx) => (
                   <motion.div key={idx} variants={fadeInUp} className="group relative rounded-3xl overflow-hidden cursor-pointer h-[400px]">
-                    <Image src={item.img} alt={item.title} fill sizes="(max-width: 768px) 100vw, 20vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <Image src={item.img} alt={item.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" quality={90} className="object-cover transition-transform duration-700 group-hover:scale-105" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 transition-opacity"></div>
                     <div className="absolute inset-0 p-6 flex flex-col justify-end">
                       <div className="w-10 h-10 rounded-full bg-primary mb-4 flex items-center justify-center opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
