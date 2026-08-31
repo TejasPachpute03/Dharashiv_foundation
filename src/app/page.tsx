@@ -217,8 +217,19 @@ function ConnectionSection() {
 
   return (
     <section className="relative py-32 bg-slate-50 overflow-hidden" ref={ref}>
-      {/* Attractive Background Elements */}
-      <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-60"></div>
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 z-0 opacity-15"
+        style={{
+          backgroundImage: "url('https://upload.wikimedia.org/wikipedia/commons/b/b1/Raje_Shahaji_Mahadwar_of_Tulja_Bhavani_Temple.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed"
+        }}
+      ></div>
+
+      {/* Attractive Background Elements Overlay */}
+      <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl pointer-events-none translate-y-1/3 -translate-x-1/3"></div>
