@@ -113,6 +113,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
           else if (e.membershipType === "Core Member / Admin") e.role = "admin";
           else e.role = "other";
         }
+        
+        // Patch to remove ui-avatars image for Aditi Sharma so she uses the text fallback
+        if (e.id === "e2" && e.profileImage?.includes("ui-avatars.com")) {
+          e.profileImage = "";
+        }
+        
         return e;
       });
       
