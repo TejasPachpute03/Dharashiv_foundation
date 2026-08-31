@@ -331,17 +331,22 @@ export function AppProvider({ children }: { children: ReactNode }) {
     // Fallback for hardcoded demo accounts if not found in array
     if (isAdminDemo) {
       setCurrentUser({ id: "e21", email: "admin@demo.com", role: "admin" });
-      return { success: true };
+      return { success: true, role: "admin" };
     }
     
     if (searchTerm === "student@demo.com") {
       setCurrentUser({ id: "s1", email: "student@demo.com", role: "student" });
-      return { success: true };
+      return { success: true, role: "student" };
     }
 
     if (searchTerm === "member@demo.com") {
       setCurrentUser({ id: "m1", email: "member@demo.com", role: "other" });
-      return { success: true };
+      return { success: true, role: "other" };
+    }
+
+    if (searchTerm === "business@demo.com") {
+      setCurrentUser({ id: "b1", email: "business@demo.com", role: "business" });
+      return { success: true, role: "business" };
     }
     
     return { success: false, error: "No account found with this email." };
