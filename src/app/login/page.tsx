@@ -3,58 +3,60 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Network, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { useAppContext } from "@/context/AppContext";
+import { getDashboardForRole } from "@/lib/route-utils";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login } = useAppContext();
-  const [role, setRole] = useState<"business" | "admin" | "student" | "member">("business");
+  const { login, currentUser } = useAppContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (role === "business") {
-      login(email || "business@demo.com", "Business / Member");
+    setIsLoading(true);
+    setError(null);
+
+    // Give it a tiny delay for UX
+    await new Promise(r => setTimeout(r, 600));
+
+    const result = login(email, password);
+    
+    if (result.success) {
+      // The context will update currentUser synchronously in this mock setup.
+      // But we can also rely on RoleGuard later, or force it here if we had access to the new user.
+      // To ensure we get the right role, we can just let context update and redirect.
+      // Wait, since login updates context synchronously, let's just push to /dashboard or /student etc.
+      // Actually, since login() doesn't return the user object directly, we can just push to `/` and let RoleGuard handle it,
+      // OR we can push to a loading state. Let's get the user from localStorage or just push to `/` and let layout handle it.
+      // Actually, since context updates immediately, we might not have `currentUser` in this closure immediately.
+      // Let's do a trick: we know the destination from `getDashboardForRole(login_result_role)`.
+      // The easiest way is to let `useEffect` handle it, but Next.js router.push is fine. 
+      // I'll push to `/dashboard` and RoleGuard will redirect if wrong, OR I can just push to `/` and a global guard handles it.
+      // Wait, there's no global guard on `/`. Let's just push them to `/dashboard`, the RoleGuard on `/dashboard` will redirect them to their actual dashboard!
       router.push("/dashboard");
-    } else if (role === "admin") {
-      login(email || "nilesh@intechengg.com", "Core Member / Admin");
-      router.push("/admin");
-    } else if (role === "student") {
-      login(email || "student@demo.com", "Student");
-      router.push("/student");
     } else {
-      login(email || "member@demo.com", "General Member");
-      router.push("/member");
+      setError(result.error || "Login failed");
+      setIsLoading(false);
     }
   };
 
-  const loadDemo = (demoRole: "business" | "admin" | "student" | "member") => {
-    if (demoRole === "business") {
-      setEmail("business@demo.com");
-      setPassword("demo123");
-      setRole("business");
-    } else if (demoRole === "admin") {
-      setEmail("nilesh@intechengg.com");
-      setPassword("admin123");
-      setRole("admin");
-    } else if (demoRole === "student") {
-      setEmail("student@demo.com");
-      setPassword("student123");
-      setRole("student");
-    } else {
-      setEmail("member@demo.com");
-      setPassword("member123");
-      setRole("member");
-    }
+  const loadDemo = (role: string) => {
+    if (role === "student") setEmail("student@demo.com");
+    if (role === "business") setEmail("business@demo.com");
+    if (role === "member") setEmail("member@demo.com");
+    if (role === "admin") setEmail("admin@demo.com");
+    setPassword("demo123");
   };
 
   return (
-    <div className="min-h-screen bg-muted/30 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#FAF9F7] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
           <Link href="/" className="flex items-center space-x-2">
@@ -65,78 +67,46 @@ export default function LoginPage() {
           Sign in to your account
         </h2>
         <p className="mt-2 text-center text-sm text-muted-foreground">
-          Or <Link href="/join" className="font-medium text-primary hover:text-primary/80">join the network</Link>
+          Or <Link href="/register" className="font-medium text-primary hover:text-primary/80 transition-colors">join the community</Link>
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4 sm:px-0">
-        <Card className="shadow-lg border-none sm:border-solid">
-          <CardHeader className="space-y-1 bg-muted/20 border-b pb-6">
-            <div className="flex gap-2 p-1 bg-muted rounded-md mb-4 overflow-x-auto">
-              <button
-                type="button"
-                className={`flex-1 min-w-24 py-1.5 text-sm font-medium rounded-sm transition-all ${
-                  role === "student" ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
-                }`}
-                onClick={() => setRole("student")}
-              >
-                Student
-              </button>
-              <button
-                type="button"
-                className={`flex-1 min-w-24 py-1.5 text-sm font-medium rounded-sm transition-all ${
-                  role === "business" ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
-                }`}
-                onClick={() => setRole("business")}
-              >
-                Business
-              </button>
-              <button
-                type="button"
-                className={`flex-1 min-w-20 py-1.5 text-sm font-medium rounded-sm transition-all ${
-                  role === "admin" ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
-                }`}
-                onClick={() => setRole("admin")}
-              >
-                Core Member
-              </button>
-              <button
-                type="button"
-                className={`flex-1 min-w-20 py-1.5 text-sm font-medium rounded-sm transition-all ${
-                  role === "member" ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"
-                }`}
-                onClick={() => setRole("member")}
-              >
-                Member
-              </button>
-            </div>
+        <Card className="shadow-lg border border-border/50">
+          <CardHeader className="space-y-1 bg-white border-b pb-6 rounded-t-xl">
             <CardTitle className="text-xl">
-              {role === "business" ? "Business Login" : role === "admin" ? "Admin Login" : role === "student" ? "Student Login" : "Member Login"}
+              Member Login
             </CardTitle>
             <CardDescription>
-              Enter your credentials to access your account.
+              Enter your credentials to access your unified dashboard.
             </CardDescription>
           </CardHeader>
-          <CardContent className="pt-6">
+          <CardContent className="pt-6 bg-white rounded-b-xl">
             <form onSubmit={handleLogin} className="space-y-4">
+              {error && (
+                <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+                  {error}
+                </div>
+              )}
               <div className="space-y-2">
-                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                <label className="text-sm font-medium leading-none text-foreground">
                   Email Address
                 </label>
                 <Input 
                   type="email" 
-                  placeholder={role === "business" ? "business@demo.com" : role === "admin" ? "nilesh@intechengg.com" : role === "student" ? "student@demo.com" : "member@demo.com"} 
+                  placeholder="name@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required 
+                  className="bg-white border-gray-300 focus-visible:ring-primary"
                 />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  <label className="text-sm font-medium leading-none text-foreground">
                     Password
                   </label>
-                  <a href="#" className="text-xs font-medium text-primary hover:text-primary/80">
+                  <a href="#" className="text-xs font-medium text-primary hover:text-primary/80 transition-colors">
                     Forgot password?
                   </a>
                 </div>
@@ -146,10 +116,11 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required 
+                  className="bg-white border-gray-300 focus-visible:ring-primary"
                 />
               </div>
-              <Button type="submit" className="w-full bg-primary text-primary-foreground">
-                Sign In
+              <Button type="submit" disabled={isLoading} className="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all">
+                {isLoading ? "Signing in..." : "Sign In"}
               </Button>
             </form>
 
@@ -159,38 +130,22 @@ export default function LoginPage() {
                   <div className="w-full border-t border-border" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="bg-card px-2 text-muted-foreground">Demo Accounts</span>
+                  <span className="bg-white px-2 text-muted-foreground">Demo Accounts</span>
                 </div>
               </div>
 
               <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <Button 
-                  variant="outline" 
-                  onClick={() => loadDemo("student")}
-                  className={`text-xs px-2 ${role === "student" ? "border-primary bg-primary/5 text-primary" : ""}`}
-                >
-                  Try Student
+                <Button variant="outline" onClick={() => loadDemo("student")} className="text-xs px-2 hover:bg-primary/5 hover:text-primary hover:border-primary transition-colors">
+                  Student
                 </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={() => loadDemo("business")}
-                  className={`text-xs px-2 ${role === "business" ? "border-primary bg-primary/5 text-primary" : ""}`}
-                >
-                  Try Business
+                <Button variant="outline" onClick={() => loadDemo("business")} className="text-xs px-2 hover:bg-primary/5 hover:text-primary hover:border-primary transition-colors">
+                  Business
                 </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={() => loadDemo("member")}
-                  className={`text-xs px-2 ${role === "member" ? "border-primary bg-primary/5 text-primary" : ""}`}
-                >
-                  Try Member
+                <Button variant="outline" onClick={() => loadDemo("member")} className="text-xs px-2 hover:bg-primary/5 hover:text-primary hover:border-primary transition-colors">
+                  Member
                 </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={() => loadDemo("admin")}
-                  className={`text-xs px-2 ${role === "admin" ? "border-primary bg-primary/5 text-primary" : ""}`}
-                >
-                  Try Admin
+                <Button variant="outline" onClick={() => loadDemo("admin")} className="text-xs px-2 hover:bg-primary/5 hover:text-primary hover:border-primary transition-colors">
+                  Admin
                 </Button>
               </div>
             </div>
@@ -198,7 +153,7 @@ export default function LoginPage() {
         </Card>
         
         <div className="mt-6 text-center">
-          <Link href="/" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center">
+          <Link href="/" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center transition-colors">
             <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
           </Link>
         </div>

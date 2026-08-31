@@ -1,21 +1,43 @@
 export type MembershipType = "Business / Member" | "Core Member / Admin" | "Student" | "General Member";
+export type Role = "business" | "student" | "professional" | "government" | "freelancer" | "other" | "admin";
 export type MemberStatus = "Active" | "Pending" | "Rejected" | "Inactive";
 export type ConnectionStatus = "Not Connected" | "Request Sent" | "Request Received" | "Connected";
 
 export interface User {
   id: string;
+  name?: string;
   email: string;
-  role: MembershipType;
+  role: Role;
+  membershipType?: MembershipType; // Legacy
 }
 
 export interface Entrepreneur {
   id: string;
   name: string;
+  email: string;
+  role?: Role; // The new canonical role
+  membershipType: MembershipType; // Legacy
+  
+  // Personal Details
+  gaon?: string;
+  taluka?: string;
+  district?: string;
+  currentCity?: string;
+  dob?: string;
+  gender?: string;
+  whatsappMobile?: string;
+  callingMobile?: string;
+  
+  // Business Specific
+  businessCategory?: string;
+  businessType?: string;
+
+  // Existing Fields
   designation: string;
   profileImage: string;
   companyName: string;
   companyLogo?: string;
-  category: string;
+  category: string; // Legacy
   industry: string;
   location: string;
   address?: {
@@ -33,13 +55,11 @@ export interface Entrepreneur {
   lookingFor: string[];
   businessNeeds: string;
   website?: string;
-  email: string;
   phone: string;
   linkedin?: string;
   instagram?: string;
   facebook?: string;
   verified: boolean;
-  membershipType: MembershipType;
   memberSince: string;
   status: MemberStatus;
 }

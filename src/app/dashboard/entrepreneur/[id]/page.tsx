@@ -19,7 +19,7 @@ export default function EntrepreneurProfilePage({ params }: { params: Promise<{ 
   const [showConnectionsModal, setShowConnectionsModal] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const isAdmin = currentUser?.role === "Core Member / Admin";
+  const isAdmin = currentUser?.role === "admin";
 
   const handleEditSubmit = (data: Partial<Entrepreneur>) => {
     if (profile) {

@@ -9,6 +9,7 @@ import { GlobalChat } from "@/components/shared/GlobalChat";
 import { useAppContext } from "@/context/AppContext";
 import { Avatar } from "@/components/ui/Avatar";
 import Link from "next/link";
+import { RoleGuard } from "@/components/auth/RoleGuard";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { currentUser, entrepreneurs } = useAppContext();
@@ -21,7 +22,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     setMounted(true);
     if (!currentUser) {
       router.push("/login");
-    } else if (currentUser.role === "Core Member / Admin" && pathname === "/dashboard") {
+    } else if (currentUser.role === "admin" && pathname === "/dashboard") {
       // Only redirect to /admin if they try to access the root /dashboard page directly
       router.push("/admin");
     }
@@ -31,10 +32,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     return null; // or a loading spinner
   }
 
-  const isAdmin = currentUser.role === "Core Member / Admin";
+  const isAdmin = currentUser.role === "admin";
 
   return (
-    <div className="flex min-h-screen bg-muted/30">
+    <RoleGuard allowedRoles={["business", "admin"]}>
+      <div className="flex min-h-screen bg-muted/30">
       {isAdmin ? (
         <AdminSidebar />
       ) : (
@@ -70,5 +72,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </div>
       {!isAdmin && <GlobalChat />}
     </div>
+    </RoleGuard>
   );
 }

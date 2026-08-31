@@ -90,10 +90,10 @@ function HeroSection() {
             
             <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center gap-4">
               <Button size="lg" className="w-full sm:w-auto bg-primary text-white hover:bg-accent transition-colors text-base px-8 h-14 rounded-full shadow-lg hover:shadow-xl" asChild>
-                <Link href="/join">Join Dharashiv Foundation</Link>
+                <Link href="/register">Register</Link>
               </Button>
               <Button size="lg" variant="outline" className="w-full sm:w-auto border-border text-foreground hover:bg-muted transition-colors text-base px-8 h-14 rounded-full" asChild>
-                <a href="#community">Explore the Community</a>
+                <Link href="/login">Login</Link>
               </Button>
             </motion.div>
             
@@ -477,10 +477,10 @@ export default function LandingPage() {
               </motion.p>
               <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-6">
                 <Button size="lg" className="w-full sm:w-auto bg-white text-primary hover:bg-muted text-lg font-bold px-10 h-16 rounded-full shadow-xl" asChild>
-                  <Link href="/join">Join Dharashiv Foundation</Link>
+                  <Link href="/register">Register</Link>
                 </Button>
                 <Button size="lg" variant="outline" className="w-full sm:w-auto border-2 border-white text-white hover:bg-white/10 text-lg font-bold px-10 h-16 rounded-full" asChild>
-                  <Link href="/login">Explore the Community</Link>
+                  <Link href="/login">Login</Link>
                 </Button>
               </motion.div>
             </motion.div>

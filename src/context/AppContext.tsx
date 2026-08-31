@@ -15,7 +15,8 @@ export interface SystemSettings {
 
 interface AppContextType {
   currentUser: User | null;
-  login: (email: string, role: "Business / Member" | "Core Member / Admin" | "Student" | "General Member") => void;
+  login: (email: string, password?: string) => { success: boolean; error?: string };
+  register: (data: Partial<Entrepreneur>) => { success: boolean; error?: string };
   logout: () => void;
   
   entrepreneurs: Entrepreneur[];
@@ -102,13 +103,34 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const storedEntrepreneurs = localStorage.getItem("df_entrepreneurs");
     if (storedEntrepreneurs) {
       const parsed = JSON.parse(storedEntrepreneurs);
-      if (parsed.length < mockEntrepreneurs.length) {
-        setEntrepreneurs(mockEntrepreneurs);
+      
+      // Migration step: ensure all users have the new canonical role
+      const migrated = parsed.map((e: Entrepreneur) => {
+        if (!e.role) {
+          if (e.membershipType === "Business / Member") e.role = "business";
+          else if (e.membershipType === "Student") e.role = "student";
+          else if (e.membershipType === "General Member") e.role = "other";
+          else if (e.membershipType === "Core Member / Admin") e.role = "admin";
+          else e.role = "other";
+        }
+        return e;
+      });
+      
+      if (migrated.length < mockEntrepreneurs.length) {
+        setEntrepreneurs(mockEntrepreneurs.map(e => ({
+          ...e,
+          role: e.role || (e.membershipType === "Business / Member" ? "business" : e.membershipType === "Student" ? "student" : e.membershipType === "General Member" ? "other" : e.membershipType === "Core Member / Admin" ? "admin" : "other")
+        })));
       } else {
-        setEntrepreneurs(parsed);
+        setEntrepreneurs(migrated);
       }
     }
-    else setEntrepreneurs(mockEntrepreneurs);
+    else {
+      setEntrepreneurs(mockEntrepreneurs.map(e => ({
+        ...e,
+        role: e.role || (e.membershipType === "Business / Member" ? "business" : e.membershipType === "Student" ? "student" : e.membershipType === "General Member" ? "other" : e.membershipType === "Core Member / Admin" ? "admin" : "other")
+      })));
+    }
 
     const storedCategories = localStorage.getItem("df_categories");
     if (storedCategories) {
@@ -272,33 +294,67 @@ export function AppProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("df_settings", JSON.stringify(settings));
   }, [currentUser, entrepreneurs, categories, announcements, events, jobs, activities, connections, notifications, chatMessages, settings, isClient]);
 
-  const login = (email: string, role: "Business / Member" | "Core Member / Admin" | "Student" | "General Member") => {
+  const login = (email: string, password?: string) => {
     const searchTerm = email.trim().toLowerCase();
     
     // Check for typos in Nilesh's email
     const isNileshTypo = searchTerm === "nilesh@intechangg.com" || searchTerm.includes("nilesh");
+    const isAdminDemo = searchTerm === "admin@demo.com";
     
     const foundUser = entrepreneurs.find(e => 
       e.email.toLowerCase() === searchTerm || 
-      e.name.toLowerCase().includes(searchTerm) ||
       (isNileshTypo && e.id === "e21")
     );
     
-    let id = foundUser ? foundUser.id : "e1";
-    if (!foundUser) {
-      if (role === "Core Member / Admin") id = "e21";
-      if (role === "Student") id = "s1";
-      if (role === "General Member") id = "m1";
+    if (foundUser) {
+      setCurrentUser({ id: foundUser.id, email: foundUser.email, role: foundUser.role || "other" });
+      return { success: true };
+    }
+    
+    // Fallback for hardcoded demo accounts if not found in array
+    if (isAdminDemo) {
+      setCurrentUser({ id: "e21", email: "admin@demo.com", role: "admin" });
+      return { success: true };
+    }
+    
+    if (searchTerm === "student@demo.com") {
+      setCurrentUser({ id: "s1", email: "student@demo.com", role: "student" });
+      return { success: true };
     }
 
-    const userRole = foundUser ? foundUser.membershipType : role;
+    if (searchTerm === "member@demo.com") {
+      setCurrentUser({ id: "m1", email: "member@demo.com", role: "other" });
+      return { success: true };
+    }
     
-    let finalEmail = foundUser ? foundUser.email : email;
-    if (!foundUser && role === "Core Member / Admin" && email === "") finalEmail = "nilesh@intechengg.com";
-    if (!foundUser && role === "Student" && email === "") finalEmail = "student@demo.com";
-    if (!foundUser && role === "General Member" && email === "") finalEmail = "member@demo.com";
+    return { success: false, error: "No account found with this email." };
+  };
+
+  const register = (data: Partial<Entrepreneur>) => {
+    if (!data.email || !data.role) return { success: false, error: "Missing required fields." };
     
-    setCurrentUser({ id, email: finalEmail, role: userRole });
+    // Check if email already exists
+    const emailExists = entrepreneurs.some(e => e.email.toLowerCase() === data.email?.toLowerCase());
+    if (emailExists) {
+      return { success: false, error: "This email is already registered. Please log in instead." };
+    }
+    
+    const newId = `e${Date.now()}`;
+    
+    // Map new roles to legacy MembershipType for backwards compatibility
+    let legacyMembership: "Business / Member" | "Core Member / Admin" | "Student" | "General Member" = "General Member";
+    if (data.role === "business" || data.role === "freelancer") legacyMembership = "Business / Member";
+    if (data.role === "student") legacyMembership = "Student";
+    if (data.role === "admin") legacyMembership = "Core Member / Admin";
+    
+    addEntrepreneur({
+      ...data,
+      id: newId,
+      membershipType: legacyMembership
+    });
+    
+    setCurrentUser({ id: newId, email: data.email, role: data.role as import("@/types").Role });
+    return { success: true };
   };
 
   const logout = () => {
@@ -474,7 +530,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   return (
     <AppContext.Provider value={{
-      currentUser, login, logout,
+      currentUser, login, register, logout,
       entrepreneurs, categories, announcements, events, jobs, activities, connections, notifications,
       activeChatUserId, chatMessages, openChat, closeChat, sendMessage,
       updateProfile, updateEntrepreneurStatus,

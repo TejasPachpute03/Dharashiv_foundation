@@ -18,12 +18,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     setMounted(true);
     if (!currentUser) {
       router.push("/login");
-    } else if (currentUser.role === "Business / Member") {
+    } else if (currentUser.role !== "admin") {
       router.push("/dashboard");
     }
   }, [currentUser, router]);
 
-  if (!mounted || !currentUser || currentUser.role !== "Core Member / Admin") {
+  if (!mounted || !currentUser || currentUser.role !== "admin") {
     return null; 
   }
 

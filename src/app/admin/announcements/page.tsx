@@ -263,7 +263,7 @@ export default function AdminAnnouncementsPage() {
                   </Badge>
                   <Badge variant="outline">{ann.category}</Badge>
                   <span className="text-xs text-muted-foreground ml-2">
-                    {new Date(ann.publishDate).toLocaleDateString()}
+                    {ann.publishDate ? new Date(ann.publishDate).toLocaleDateString() : ''}
                   </span>
                   <span className="text-xs text-muted-foreground border-l pl-2 ml-2">
                     By {ann.author}
@@ -298,7 +298,7 @@ export default function AdminAnnouncementsPage() {
                     category: ann.category as any,
                     author: ann.author,
                     status: ann.status as any,
-                    publishDate: new Date(ann.publishDate).toISOString().split('T')[0]
+                    publishDate: ann.publishDate ? new Date(ann.publishDate).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
                   });
                   setCoverImage(ann.coverImage || null);
                   setAttachments(ann.attachments || []);

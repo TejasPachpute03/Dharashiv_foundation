@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { Search, Filter, Columns, Download, MoreHorizontal, UserCheck, Calendar, Phone, Activity, XCircle, Clock, Plus, Edit } from "lucide-react";
 import { useAppContext } from "@/context/AppContext";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 import { MemberFormModal } from "@/components/admin/MemberFormModal";
 import { Entrepreneur } from "@/types";
 
@@ -24,9 +25,13 @@ function AdminMembersContent() {
   const searchParams = useSearchParams();
   
   const [searchQuery, setSearchQuery] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("All");
-  const [locationFilter, setLocationFilter] = useState("All");
-  const [membershipFilter, setMembershipFilter] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [selectedLocation, setSelectedLocation] = useState<string>("All");
+  const [selectedTaluka, setSelectedTaluka] = useState<string>("All");
+  const [selectedLookingFor, setSelectedLookingFor] = useState<string>("All");
+  const [selectedMemberType, setSelectedMemberType] = useState<string>("All");
+  const [sortBy, setSortBy] = useState<string>("recommended");
+  const [showFilters, setShowFilters] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMember, setEditingMember] = useState<Entrepreneur | null>(null);
 
@@ -51,15 +56,65 @@ function AdminMembersContent() {
   const categories = Array.from(new Set(entrepreneurs.map(e => e.category).filter(Boolean))).sort();
   const locations = Array.from(new Set(entrepreneurs.map(e => e.location?.split(',')[0].trim()).filter(Boolean))).sort();
   const memberships = Array.from(new Set(entrepreneurs.map(e => e.membershipType).filter(Boolean))).sort();
+  const talukas = ["Dharashiv", "Tuljapur", "Omerga", "Lohara", "Kalamb", "Bhum", "Paranda", "Washi"];
+  
+  const lookingForOptions = useMemo(() => {
+    const options = new Set(entrepreneurs.flatMap(e => e.lookingFor || []));
+    return Array.from(options).sort();
+  }, [entrepreneurs]);
 
-  const filteredMembers = entrepreneurs.filter(e => {
-    const matchesSearch = e.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          e.companyName?.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = categoryFilter === "All" || e.category === categoryFilter;
-    const matchesLocation = locationFilter === "All" || e.location?.includes(locationFilter);
-    const matchesMembership = membershipFilter === "All" || e.membershipType === membershipFilter;
-    return matchesSearch && matchesCategory && matchesLocation && matchesMembership;
-  });
+  const filteredMembers = useMemo(() => {
+    let result = entrepreneurs;
+    
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(e => 
+        e.name?.toLowerCase().includes(q) || 
+        e.companyName?.toLowerCase().includes(q) ||
+        e.email?.toLowerCase().includes(q) ||
+        e.phone?.toLowerCase().includes(q)
+      );
+    }
+
+    if (selectedCategory && selectedCategory !== "All") {
+      result = result.filter(e => e.category === selectedCategory);
+    }
+
+    if (selectedLocation && selectedLocation !== "All") {
+      result = result.filter(e => e.location?.includes(selectedLocation) || (e.address?.currentCity && e.address.currentCity.includes(selectedLocation)));
+    }
+
+    if (selectedTaluka && selectedTaluka !== "All") {
+      result = result.filter(e => e.address?.taluka === selectedTaluka);
+    }
+
+    if (selectedLookingFor && selectedLookingFor !== "All") {
+      result = result.filter(e => e.lookingFor?.includes(selectedLookingFor));
+    }
+
+    if (selectedMemberType && selectedMemberType !== "All") {
+      result = result.filter(e => e.membershipType === selectedMemberType);
+    }
+
+    switch (sortBy) {
+      case "az":
+        result.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+        break;
+      case "za":
+        result.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
+        break;
+      default:
+        break;
+    }
+
+    return result;
+  }, [entrepreneurs, searchQuery, selectedCategory, selectedLocation, selectedTaluka, selectedLookingFor, selectedMemberType, sortBy]);
+
+  const hasActiveFilters = (selectedCategory && selectedCategory !== "All") || 
+                           (selectedLocation && selectedLocation !== "All") || 
+                           (selectedTaluka && selectedTaluka !== "All") || 
+                           (selectedLookingFor && selectedLookingFor !== "All") || 
+                           (selectedMemberType && selectedMemberType !== "All");
 
   const getInitials = (name: string) => {
     const parts = name.split(' ');
@@ -112,7 +167,7 @@ function AdminMembersContent() {
       <div className="bg-card rounded-xl shadow-sm border">
         {/* Toolbar */}
         <div className="p-4 border-b flex flex-col sm:flex-row gap-4 justify-between items-center">
-          <div className="relative w-full sm:max-w-md">
+          <div className="relative w-full sm:flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input 
               placeholder="Search clients, companies, or emails..." 
@@ -122,41 +177,14 @@ function AdminMembersContent() {
             />
           </div>
           <div className="flex items-center gap-3 w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0 no-scrollbar">
-            <div className="flex items-center bg-muted/50 rounded-full border px-3 py-1.5 shrink-0 divide-x divide-border">
-              <div className="flex items-center pr-2">
-                <Filter className="h-4 w-4 text-muted-foreground mr-2" />
-                <select 
-                  className="bg-transparent text-sm font-medium outline-none text-foreground cursor-pointer"
-                  value={categoryFilter}
-                  onChange={(e) => setCategoryFilter(e.target.value)}
-                >
-                  <option value="All">Category</option>
-                  {categories.map(c => <option key={c} value={c}>{c}</option>)}
-                </select>
-              </div>
-
-              <div className="px-2">
-                <select 
-                  className="bg-transparent text-sm font-medium outline-none text-foreground cursor-pointer"
-                  value={locationFilter}
-                  onChange={(e) => setLocationFilter(e.target.value)}
-                >
-                  <option value="All">Location</option>
-                  {locations.map(l => <option key={l} value={l}>{l}</option>)}
-                </select>
-              </div>
-
-              <div className="pl-2">
-                <select 
-                  className="bg-transparent text-sm font-medium outline-none text-foreground cursor-pointer"
-                  value={membershipFilter}
-                  onChange={(e) => setMembershipFilter(e.target.value)}
-                >
-                  <option value="All">Member Type</option>
-                  {memberships.map(m => <option key={m} value={m}>{m}</option>)}
-                </select>
-              </div>
-            </div>
+            <Button 
+              variant="outline" 
+              onClick={() => setShowFilters(!showFilters)}
+              className={`rounded-full shrink-0 h-9 px-4 text-sm bg-background ${hasActiveFilters ? "border-primary text-primary" : ""}`}
+            >
+              <Filter className="mr-2 h-4 w-4" /> Filters
+              {hasActiveFilters && <span className="ml-2 flex h-2 w-2 rounded-full bg-primary" />}
+            </Button>
             
             <Button variant="outline" className="rounded-full shrink-0 h-9 px-4 text-sm bg-background">
               <Download className="mr-2 h-4 w-4" /> Export
@@ -166,6 +194,84 @@ function AdminMembersContent() {
             </Button>
           </div>
         </div>
+
+        {/* Filters Card */}
+        {showFilters && (
+          <div className="p-4 bg-muted/20 border-b">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-muted-foreground">Category</label>
+                <select 
+                  className="flex h-10 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                >
+                  <option value="All">All Categories</option>
+                  {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-muted-foreground">Location</label>
+                <select 
+                  className="flex h-10 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+                  value={selectedLocation}
+                  onChange={(e) => {
+                    setSelectedLocation(e.target.value);
+                    setSelectedTaluka("All");
+                  }}
+                >
+                  <option value="All">All Locations</option>
+                  {locations.map(l => <option key={l} value={l}>{l}</option>)}
+                </select>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-muted-foreground">Taluka</label>
+                <select 
+                  className="flex h-10 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+                  value={selectedTaluka}
+                  onChange={(e) => setSelectedTaluka(e.target.value)}
+                >
+                  <option value="All">All Talukas</option>
+                  {talukas.map(t => <option key={t} value={t}>{t}</option>)}
+                </select>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-muted-foreground">Looking For</label>
+                <select 
+                  className="flex h-10 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+                  value={selectedLookingFor}
+                  onChange={(e) => setSelectedLookingFor(e.target.value)}
+                >
+                  <option value="All">Anything</option>
+                  {lookingForOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                </select>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-muted-foreground">Member Type</label>
+                <select 
+                  className="flex h-10 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+                  value={selectedMemberType}
+                  onChange={(e) => setSelectedMemberType(e.target.value)}
+                >
+                  <option value="All">All Types</option>
+                  {memberships.map(m => <option key={m} value={m}>{m}</option>)}
+                </select>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-muted-foreground">Sort By</label>
+                <select 
+                  className="flex h-10 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                >
+                  <option value="recommended">Recommended</option>
+                  <option value="az">A to Z</option>
+                  <option value="za">Z to A</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        )}
         
         {/* Table */}
         <div className="overflow-x-auto no-scrollbar">
@@ -207,6 +313,17 @@ function AdminMembersContent() {
 
                   <td className="px-6 py-4 text-right whitespace-nowrap">
                     <div className="flex items-center justify-end gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleOpenModal(member);
+                        }}
+                      >
+                        <Edit className="h-4 w-4 text-muted-foreground hover:text-primary" />
+                      </Button>
                       <select 
                         className="h-8 rounded border border-input bg-background px-2 text-xs outline-none cursor-pointer"
                         value={member.status === "Active" ? "Active" : "Inactive"}

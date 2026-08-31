@@ -115,7 +115,7 @@ export function EntrepreneurSidebar({ isOpen, setIsOpen }: SidebarProps) {
             </div>
             <div className="flex flex-col min-w-0 pr-2">
               <span className="text-sm font-semibold truncate group-hover:text-primary-foreground text-white transition-colors" title={currentProfile?.name || "Business"}>{currentProfile?.name || "Business"}</span>
-              <span className="text-xs text-white/60 truncate transition-colors">Member</span>
+              <span className="text-xs text-white/60 truncate transition-colors">{currentProfile?.businessCategory || currentProfile?.category || "Business / Entrepreneur"}</span>
             </div>
           </Link>
           <button 

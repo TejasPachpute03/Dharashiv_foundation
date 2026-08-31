@@ -102,16 +102,20 @@ export function StudentSidebar({ isOpen, setIsOpen }: SidebarProps) {
           {studentNav.map((item) => <NavItem key={item.href} item={item} />)}
         </div>
 
+
+
         <div className="mb-6">
           <p className="px-6 text-[10px] font-bold text-white/50 uppercase tracking-widest mb-2">Account</p>
           {accountNav.map((item) => <NavItem key={item.href} item={item} />)}
         </div>
       </nav>
 
-      <div className="p-4 border-t border-orange-200/50 mt-auto bg-muted hover:bg-muted-foreground/5 transition-colors">
+      <div className="p-4 border-t border-white/10 mt-auto bg-black/20 backdrop-blur-sm relative z-10">
         <div className="flex items-center justify-between">
           <Link href="/student/profile" className="flex items-center space-x-3 cursor-pointer group flex-1 min-w-0">
-            <ProfileCompletionAvatar profile={currentProfile} size={36} strokeWidth={2.5} className="group-hover:ring-2 ring-primary/50 transition-all rounded-full" />
+            <div className="ring-2 ring-white/20 rounded-full overflow-hidden shrink-0 bg-white/10">
+              <ProfileCompletionAvatar profile={currentProfile} size={36} strokeWidth={2.5} />
+            </div>
             <div className="flex flex-col min-w-0 pr-2">
               <span className="text-sm font-semibold truncate group-hover:text-primary-foreground text-white transition-colors" title={currentProfile?.name || "Student"}>{currentProfile?.name || "Student"}</span>
               <span className="text-xs text-white/60 truncate transition-colors">Student</span>
@@ -125,6 +129,9 @@ export function StudentSidebar({ isOpen, setIsOpen }: SidebarProps) {
           </button>
         </div>
       </div>
+      
+      {/* Optional decorative background pattern overlay to mimic texture */}
+      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none mix-blend-overlay" style={{ backgroundImage: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 100%)' }}></div>
     </div>
     </>
   );

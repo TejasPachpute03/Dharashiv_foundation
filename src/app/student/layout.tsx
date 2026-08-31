@@ -6,6 +6,7 @@ import { StudentSidebar } from "@/components/layout/StudentSidebar";
 import { DashboardHeader } from "@/components/layout/DashboardHeader";
 import { GlobalChat } from "@/components/shared/GlobalChat";
 import { useAppContext } from "@/context/AppContext";
+import { RoleGuard } from "@/components/auth/RoleGuard";
 
 export default function StudentLayout({ children }: { children: React.ReactNode }) {
   const { currentUser } = useAppContext();
@@ -15,19 +16,15 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
 
   useEffect(() => {
     setMounted(true);
-    if (!currentUser) {
-      router.push("/login");
-    } else if (currentUser.role !== "Student") {
-      router.push("/dashboard");
-    }
-  }, [currentUser, router]);
+  }, []);
 
   if (!mounted || !currentUser) {
     return null;
   }
 
   return (
-    <div className="flex min-h-screen bg-muted/30">
+    <RoleGuard allowedRoles={["student"]}>
+      <div className="flex min-h-screen bg-muted/30">
       <StudentSidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
       
       <div className="md:pl-64 flex flex-col flex-1">
@@ -38,6 +35,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
         </main>
       </div>
       <GlobalChat />
-    </div>
+      </div>
+    </RoleGuard>
   );
 }

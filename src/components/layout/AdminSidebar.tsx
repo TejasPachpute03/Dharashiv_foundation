@@ -52,14 +52,14 @@ export function AdminSidebar() {
       <Link
         href={item.href}
         className={cn(
-          "flex items-center justify-between px-3 py-2.5 mx-2 rounded-xl transition-all duration-200 text-sm font-medium group mb-1 border border-transparent",
+          "flex items-center justify-between px-3 py-2.5 mx-3 rounded-md transition-all duration-200 text-sm font-medium group mb-1",
           isActive 
-            ? "bg-primary text-primary-foreground shadow-sm shadow-primary/20" 
-            : "text-foreground hover:bg-accent-light hover:text-accent hover:border-orange-200 hover:translate-x-1"
+            ? "bg-primary text-white shadow-md shadow-primary/20" 
+            : "text-white/80 hover:bg-white/10 hover:text-white"
         )}
       >
         <div className="flex items-center space-x-3">
-          <span className={cn("transition-colors", isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-accent")}>
+          <span className={cn("transition-colors", isActive ? "text-white" : "text-white/70 group-hover:text-white")}>
             {item.icon}
           </span>
           <span>{item.label}</span>
@@ -79,7 +79,7 @@ export function AdminSidebar() {
     const currentProfile = entrepreneurs.find(e => e.id === currentUser?.id);
 
     return (
-      <div className="hidden md:flex h-screen w-64 flex-col fixed inset-y-0 z-50 bg-muted border-r border-orange-100 text-foreground md:shadow-none shadow-lg">
+      <div className="hidden md:flex h-screen w-64 flex-col fixed inset-y-0 z-50 bg-gradient-to-b from-[#5c1c04] to-[#b53a06] border-r border-[#8a2a06] text-white shadow-2xl md:shadow-none">
         <Link href="/admin" className="p-6 flex flex-col items-center justify-center space-y-3 mb-2 hover:opacity-90 transition-opacity text-center relative z-10">
           <img src="/logo.png" alt="Dharashiv Foundation Logo" className="h-16 w-16 object-contain rounded-full shadow-lg border-2 border-white/20 bg-white" />
           <span className="font-bold text-lg tracking-tight text-white leading-tight">Dharashiv<br/>Foundation</span>
@@ -107,10 +107,12 @@ export function AdminSidebar() {
           </div>
         </nav>
 
-        <div className="p-4 border-t border-orange-200/50 mt-auto bg-muted hover:bg-muted-foreground/5 transition-colors">
+        <div className="p-4 border-t border-white/10 mt-auto bg-black/20 backdrop-blur-sm relative z-10">
           <div className="flex items-center justify-between">
             <Link href="/admin/profile" className="flex items-center space-x-3 cursor-pointer group flex-1 min-w-0">
-              <ProfileCompletionAvatar profile={currentProfile} size={36} strokeWidth={2.5} className="group-hover:ring-2 ring-primary/50 transition-all rounded-full" />
+              <div className="ring-2 ring-white/20 rounded-full overflow-hidden shrink-0 bg-white/10">
+                <ProfileCompletionAvatar profile={currentProfile} size={36} strokeWidth={2.5} />
+              </div>
               <div className="flex flex-col min-w-0 pr-2">
                 <span className="text-sm font-semibold truncate group-hover:text-primary-foreground text-white transition-colors" title={currentProfile?.name || "Admin User"}>{currentProfile?.name || "Admin User"}</span>
                 <span className="text-xs text-white/60 truncate transition-colors" title={currentUser?.email}>{currentUser?.email}</span>
@@ -124,6 +126,9 @@ export function AdminSidebar() {
           </button>
         </div>
       </div>
+      
+      {/* Optional decorative background pattern overlay to mimic texture */}
+      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none mix-blend-overlay" style={{ backgroundImage: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 100%)' }}></div>
     </div>
   );
 }
