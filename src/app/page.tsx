@@ -13,7 +13,7 @@ import { motion, Variants, useScroll, useTransform, useReducedMotion, useInView 
 // Centralized Image Configuration
 const foundationImages = {
   heroLandscape: "/images/dharashiv-night.png",
-  rootsLarge: "https://images.unsplash.com/photo-1621217348981-698f26db12c7?auto=format&fit=crop&q=80&w=1200",
+  rootsLarge: "/images/tuljabhavani-gate.jpg",
   rootsSmall1: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&q=80&w=800",
   rootsSmall2: "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&q=80&w=800",
   students: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800",
