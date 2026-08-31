@@ -290,7 +290,12 @@ function ConnectionSection() {
 // MAIN EXPORT
 // ---------------------------------------------------------
 export default function LandingPage() {
-  const featuredEntrepreneurs = mockEntrepreneurs.slice(0, 4);
+  const featuredEntrepreneurs = [
+    mockEntrepreneurs.find(e => e.id === "e1") || mockEntrepreneurs[0],
+    mockEntrepreneurs.find(e => e.id === "e21") || mockEntrepreneurs[1],
+    mockEntrepreneurs.find(e => e.id === "s1") || mockEntrepreneurs[2],
+    mockEntrepreneurs.find(e => e.id === "m1") || mockEntrepreneurs[3],
+  ];
   const prefersReducedMotion = useReducedMotion();
   
   return (
@@ -388,7 +393,13 @@ export default function LandingPage() {
                     <div className="p-8">
                       <div className="flex items-center space-x-4 mb-6">
                         <div className="relative h-16 w-16">
-                          <Image src={ent.profileImage} alt={ent.name} fill sizes="64px" className="rounded-full object-cover border-2 border-muted" />
+                          {ent.profileImage ? (
+                            <Image src={ent.profileImage} alt={ent.name} fill sizes="64px" className="rounded-full object-cover border-2 border-muted" />
+                          ) : (
+                            <div className="w-full h-full rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl border-2 border-muted">
+                              {ent.name.charAt(0)}
+                            </div>
+                          )}
                         </div>
                         <div>
                           <h3 className="font-bold text-foreground text-lg group-hover:text-primary transition-colors">{ent.name}</h3>
@@ -400,8 +411,10 @@ export default function LandingPage() {
                         <p className="text-sm text-primary font-medium">{ent.category}</p>
                       </div>
                       <div className="mb-6 text-sm text-muted-foreground space-y-3">
-                        <p className="flex items-center font-medium"><MapPin className="w-4 h-4 mr-2 text-foreground/40" /> <span>{ent.location?.split(',')[0]}</span></p>
-                        <p className="bg-muted p-3 rounded-xl"><strong className="text-foreground block mb-1">Looking for:</strong> {ent.lookingFor?.[0]}</p>
+                        <p className="flex items-center font-medium"><MapPin className="w-4 h-4 mr-2 text-foreground/40" /> <span>{ent.location ? ent.location.split(',')[0] : "Dharashiv"}</span></p>
+                        <p className="bg-muted p-3 rounded-xl line-clamp-2 text-xs">
+                          {ent.description || ent.businessNeeds || `Passionate ${ent.designation || 'member'} contributing to the Dharashiv Foundation community.`}
+                        </p>
                       </div>
                     </div>
                   </motion.div>
